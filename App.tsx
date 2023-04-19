@@ -6,7 +6,7 @@ import { Home } from './src/screens/Home';
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar style='inverted' />
+      <StatusBar style='dark' />
       <Home />
     </ThemeProvider>
   );
