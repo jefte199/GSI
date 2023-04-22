@@ -1,27 +1,32 @@
-import { View, StyleSheet } from 'react-native';
-import { Container, } from './styles';
+import { FlatList } from 'react-native';
+import { Line } from './styles';
 import { Header } from '../../Components/Header';
 import { Card } from '../../Components/Card';
 
 export function Home() {
-  const imgNf = require('../../assets/imgNf.png');
+  const imgCasa = require('../../assets/Casa.jpg');
+  const data = [{ id: 1, title: 'casa 1', location: 'aquela rua', price: '15000R$' }, { id: 2, title: 'casa 2', location: 'aquela rua', price: '95000R$' }, { id: 3, title: 'casa 3', location: 'aquela rua', price: '150R$' }]
+
+  function myCard () {
+    return (
+      <Card
+            imageSource={imgCasa}
+            title='Test'
+            location='Rua florencio carneiro'
+            price='1500R$' />
+    )
+  }
   return (
     <>
       <Header />
-      <View style={styles.separator} />
-      <Card
-        imageSource={imgNf}
-        title='Test'
-        location='Rua florencio carneiro'
-        price='1500R$' />
+      <Line />
+
+      <FlatList
+        data={data}
+        renderItem={myCard}
+        keyExtractor={(item) => `${item.id}`}
+      />
+
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  separator: {
-    height: 1,
-    backgroundColor: '#ddd',
-    marginHorizontal: 16,
-  },
-});
