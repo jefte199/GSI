@@ -18,7 +18,7 @@ export function Home() {
   }
   return (
     <>
-      <Header />
+      <Header showBackButton={false} />
       <Line />
 
       <FlatList
