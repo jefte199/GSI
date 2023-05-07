@@ -1,59 +1,32 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import { Container, Title, Image, Text, Description } from '../AddPropertyForm/styles';
+import { Header } from '../../Components/Header';
+import { priceFormat } from '../../util/priceFormat';
+import { Button } from '../../Components/Button';
+import { Line } from '../../Components/Line';
+import { Tag } from '../../Components/Tag';
 
-const Container = styled.View`
-  flex: 1;
-  padding: 24px;
-  background-color: #fff;
-`;
-
-const Section = styled.View`
-  margin-bottom: 16px;
-`;
-
-const Label = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8px;
-`;
-
-const Value = styled.Text`
-  font-size: 16px;
-  color: #333;
-`;
+const imgCasa = require('../../assets/Casa.jpg');
 
 export function InfoScreen() {
-  const property = {
-    type: 'Alugar',
-    price: 2000,
-    bedrooms: 3,
-    bathrooms: 2,
-    parking: 1,
-  };
 
   return (
     <Container>
-      <Section>
-        <Label>Tipo</Label>
-        <Value>{property.type}</Value>
-      </Section>
-      <Section>
-        <Label>Preço</Label>
-        <Value>R$ {property.price}</Value>
-      </Section>
-      <Section>
-        <Label>Quartos</Label>
-        <Value>{property.bedrooms}</Value>
-      </Section>
-      <Section>
-        <Label>Banheiros</Label>
-        <Value>{property.bathrooms}</Value>
-      </Section>
-      <Section>
-        <Label>Vagas</Label>
-        <Value>{property.parking}</Value>
-      </Section>
-    </Container>
+      <Header showBackButton={true} />
+      <Image source={imgCasa} />
+
+      <Text>Venda</Text>
+      <Title> R$ {priceFormat(20000)}</Title>
+      <Description>
+        Casa bem localiza com acesso rapido ao campo e a cidade, perto do posto de atendimento medico e perto do possto policail
+      </Description>
+
+      <Line />
+      <Tag number={'10'} iconName="" text='banheiro'/>
+
+      <Button
+        title='Compartilhar'
+        type='TERTIARY' />
+    </Container >
   );
 }
