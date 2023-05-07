@@ -25,4 +25,6 @@ export function AddPropertyForm() {
   Quartos - Select
   Bainheiros - Select
   Vagas - Select
+  Endereço - Input
+  Bairro - Select
  */
