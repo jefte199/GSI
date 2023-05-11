@@ -1,15 +1,32 @@
 import styled from 'styled-components/native';
-import { CaretLeft } from 'phosphor-react-native';
+import { CarSimple, Bed, Shower } from 'phosphor-react-native';
 
 export const Container = styled.View`
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
-export const StyledIcon = styled(CaretLeft).attrs(({ theme }) => ({
+export const ContainerIcon = styled.View`
+  width: 33%;
+  flex-direction: column;
+`;
+
+export const CarIcon = styled(CarSimple).attrs(({ theme }) => ({
+  size: 32,
+  color: theme.COLORS.ORANGE_100,
+}))``;
+
+export const ShowerIcon = styled(Shower).attrs(({ theme }) => ({
   size: 32,
   color: theme.COLORS.ORANGE_100
 }))``;
+
+
+export const BedIcon = styled(Bed).attrs(({ theme }) => ({
+  size: 32,
+  color: theme.COLORS.ORANGE_100
+}))``;
+
 
 export const Number = styled.Text`
   font-size: 18px;

@@ -24,6 +24,8 @@ export const Text = styled.Text`
 export const Description = styled.Text`
   color: ${({ theme }) => theme.COLORS.GRAY_300};
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 export const Image = styled.Image`
