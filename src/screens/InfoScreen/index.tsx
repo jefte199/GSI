@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Image, Text, Description } from '../AddPropertyForm/styles';
+import { Container, Title, Image, TagText, Description } from './styles';
 import { Header } from '../../Components/Header';
 import { priceFormat } from '../../util/priceFormat';
 import { Button } from '../../Components/Button';
@@ -16,7 +16,8 @@ export function InfoScreen() {
       <Header showBackButton={true} />
       <Image source={imgCasa} />
 
-      <Text>Aluguel</Text>
+      <TagText>Aluguel</TagText>
+      <TagText>20/03/2004</TagText>
       
       <Title> R$ {priceFormat(300)}</Title>
       <Description>
