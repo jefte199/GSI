@@ -1,12 +1,13 @@
-import { Container, ContainerIcon, CarIcon, ShowerIcon, BedIcon, Number, Text } from './styles';
+import { Container, ContainerIcon, CarIcon, ShowerIcon, BedIcon, HouseLineIcon, Number, Text } from './styles';
 
 interface Props {
   numberGarage: string;
   numberShower: string;
   numberBed: string;
+  area: string;
 }
 
-export const Tag: React.FC<Props> = ({ numberGarage, numberShower, numberBed }) => {
+export const Tag: React.FC<Props> = ({ numberGarage, numberShower, numberBed, area }) => {
   return (
     <Container>
 
@@ -28,7 +29,11 @@ export const Tag: React.FC<Props> = ({ numberGarage, numberShower, numberBed }) 
         <Text>Quartos</Text>
       </ContainerIcon>
 
-
+      <ContainerIcon>
+        <HouseLineIcon />
+        <Number>{area}m²</Number>
+        <Text>Área</Text>
+      </ContainerIcon>
     </Container>
   );
 };

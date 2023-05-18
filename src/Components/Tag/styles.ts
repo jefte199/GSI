@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { CarSimple, Bed, Shower } from 'phosphor-react-native';
+import { CarSimple, Bed, Shower, HouseLine } from 'phosphor-react-native';
 
 export const Container = styled.View`
   flex-direction: row;
@@ -7,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const ContainerIcon = styled.View`
-  width: 33%;
+  width: 25%;
   flex-direction: column;
 `;
 
@@ -23,6 +23,11 @@ export const ShowerIcon = styled(Shower).attrs(({ theme }) => ({
 
 
 export const BedIcon = styled(Bed).attrs(({ theme }) => ({
+  size: 32,
+  color: theme.COLORS.ORANGE_100
+}))``;
+
+export const HouseLineIcon = styled(HouseLine).attrs(({ theme }) => ({
   size: 32,
   color: theme.COLORS.ORANGE_100
 }))``;
