@@ -1,3 +1,4 @@
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
 export type StyleProps = 'PRIMARY' | 'SECONDARY' | 'TERTIARY';
@@ -6,7 +7,7 @@ type Props = {
   type: StyleProps
 }
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)`
   flex: 1;
   padding: 24px;
 `;
