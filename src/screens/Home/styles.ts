@@ -1,10 +1,14 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 export const Container = styled(SafeAreaView)`
   flex: 1;
   //background-color: ${({ theme }) => theme.COLORS.GRAY_400};
   padding: 24px;
+  `;
+
+export const OnClick = styled(TouchableOpacity)`
 `;
 
 export const Title = styled.Text`
@@ -12,7 +16,7 @@ export const Title = styled.Text`
   font-size: 32;
 `;
 
-export const Line =  styled.View`
+export const Line = styled.View`
   height: 1px;
   background-color: #ddd;
   margin-horizontal: 16px;
