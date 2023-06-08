@@ -1,26 +1,26 @@
-import { useState } from 'react';
-import { Container, StyledPicker } from "./styles";
+import { Container } from "./styles";
 import { Picker } from '@react-native-picker/picker';
 
-export function Select() {
-  const data = ['Alugar', 'Vender']
-  const [selectedOption, setSelectedOption] = useState<string>('');
+interface ChildComponentProps {
+  List: string[];
+  SelectedOption: string;
+  setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
+}
 
-  function handleSelect() {
-    console.log("value")
-    setSelectedOption("Alugar");
+export function Select({ List, SelectedOption, setSelectedOption }: ChildComponentProps) {
+  function handleSelect(value: string) {
+      setSelectedOption(value);
   }
-  const [selectedLanguage, setSelectedLanguage] = useState();
-
   return (
     <Container>
       <Picker
-        selectedValue={selectedLanguage}
+        selectedValue={SelectedOption}
         onValueChange={(itemValue, itemIndex) =>
-          setSelectedLanguage(itemValue)
+          handleSelect(itemValue)
         }>
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
+        {
+          List.map((item) => <Picker.Item key={item} label={item} value={item} />)
+        }
       </Picker>
 
     </Container >
