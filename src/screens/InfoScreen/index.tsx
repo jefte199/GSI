@@ -33,11 +33,10 @@ export function InfoScreen() {
       <ContainerTags>
         <TagText type='PRIMARY'>Aluguel</TagText>
         <TagText type='PRIMARY'>NOVO</TagText>
-        <TagText type='PRIMARY'>23 m²</TagText>
         <TagText type='SECONDARY'>20/03/2004</TagText>
       </ContainerTags>
 
-      <Title> R$ {priceFormat(300)}</Title>
+      <Title> R$ {priceFormat(3000)}</Title>
       <Description>
         Rua tabelião eneias 331 Quixadá centro
       </Description>
