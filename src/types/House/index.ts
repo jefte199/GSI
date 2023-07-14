@@ -1,5 +1,5 @@
 export interface House {
-  id?: number;
+  id: number;
   newHouse: string;
   rented: string;
   selectedDate: string;
