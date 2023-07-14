@@ -92,15 +92,19 @@ export const sql = {
   },
 
   getHouse: () => {
-    return new Promise<House>((resolve, reject) => {
+    return new Promise<House[]>((resolve, reject) => {
       db.transaction((transaction) => {
         transaction.executeSql(
           'SELECT * FROM houses;',
           [],
           (_, { rows }) => {
             if (rows.length > 0) {
-              const house = rows.item(0) as House; // Obtém o primeiro registro encontrado
-              resolve(house);
+              const houseList: House[] = [];
+              for (let i = 0; i < rows.length; i++) {
+                const house = rows.item(i) as House;
+                houseList.push(house);
+              }
+              resolve(houseList);
             } else {
               reject(new Error('House not found'));
             }
@@ -112,5 +116,27 @@ export const sql = {
       });
     });
   },
+
+  deleteHouse: (id: number) => {
+    return new Promise<void>((resolve, reject) => {
+      db.transaction((transaction) => {
+        transaction.executeSql(
+          'DELETE FROM houses WHERE id = ?;',
+          [id],
+          (_, { rowsAffected }) => {
+            if (rowsAffected > 0) {
+              resolve();
+            } else {
+              reject(new Error('House not found'));
+            }
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+  },
+
 };
 
