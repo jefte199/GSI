@@ -1,63 +1,84 @@
 import React from 'react';
+import { ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Container, ContainerTags, Title, Image, TagText, Description } from './styles';
-import { Header } from '../../Components/Header';
 import { priceFormat } from '../../util/priceFormat';
+import { Header } from '../../Components/Header';
 import { Button } from '../../Components/Button';
 import { Tag } from '../../Components/Tag';
-import ContactComponent from '../../Components/ContactComponent';
+import { ContactComponent } from '../../Components/ContactComponent';
+import { House } from '../../types/House';
+import { sql } from '../../SQL';
 
 const imgCasa = require('../../assets/Casa.jpg');
 
 interface Props {
-  Typo: string;
-  Status: string;
-  Finish_date: string;
-  Price: number;
-  Adress: string;
-  Neighborhood: string;
-  Cars: number;
-  Bathrooms: number;
-  Rooms: number;
-  Description: string;
-  Area: number;
+  route: {
+    params: {
+      home: House
+    }
+  }
 }
 
-export function InfoScreen() {
+export function InfoScreen(home: Props) {
+  const req = home.route.params.home;
 
+  const navigation = useNavigation();
+
+  async function handleAdd() {
+    navigation.navigate('home');
+  }
+
+  const deleteHouse = async () => {
+    await sql.deleteHouse((req.id))
+      .then((house) => {
+        console.log(house)
+      })
+      .catch((error) => {
+        return error
+      });
+      handleAdd();
+  }
   return (
-    <Container>
-      <Header showBackButton={true} />
-      <Image source={imgCasa} />
+    <ScrollView>
+      <Container>
+        <Header showBackButton={true} />
+        <Image source={imgCasa} />
+
+        <ContainerTags>
+          <TagText type='PRIMARY'>{req.rented || "💔"}</TagText>
+          <TagText type='PRIMARY'>{req.newHouse || "💔"}</TagText>
+          <TagText type='SECONDARY'>{req.selectedDate || "💔"}</TagText>
+        </ContainerTags>
+
+        <Title> R$ {priceFormat(req.price) || "💔"}</Title>
+        <Description>
+          {req.comment || "💔"}
+        </Description>
 
 
-      <ContainerTags>
-        <TagText type='PRIMARY'>Aluguel</TagText>
-        <TagText type='PRIMARY'>NOVO</TagText>
-        <TagText type='SECONDARY'>20/03/2004</TagText>
-      </ContainerTags>
+        <Tag
+          numberGarage={req.garage || "💔"}
+          numberShower={req.bathroom.toString() || "💔"}
+          numberBed={req.rooms.toString() || "💔"}
+          area={req.area.toString() || "💔"}
+        />
 
-      <Title> R$ {priceFormat(3000)}</Title>
-      <Description>
-        Rua tabelião eneias 331 Quixadá centro
-      </Description>
+        <ContactComponent />
 
+        <Button
+          title='Compartilhar'
+          type='TERTIARY' />
 
-      <Tag
-        numberGarage={'2'}
-        numberShower={'2'}
-        numberBed={'4'}
-        area={'26'}
-      />
+        <Button
+          title='Editar'
+          type='PRIMARY' />
 
-
-      <Description>
-        Casa bem localiza com acesso rapido ao campo e a cidade, perto do posto de atendimento medico e perto do possto policail
-      </Description>
-
-      <ContactComponent />
-      <Button
-        title='Compartilhar'
-        type='TERTIARY' />
-    </Container >
+        <Button
+          onPress={deleteHouse}
+          title='Deletar'
+          type='SECONDARY' />
+      </Container >
+    </ScrollView>
   );
 }
