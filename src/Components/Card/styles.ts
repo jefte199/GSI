@@ -18,13 +18,13 @@ export const InfoContainer = styled.View`
   padding: 16px;
 `;
 
-export const Title = styled.Text`
+export const Location = styled.Text`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 4px;
 `;
 
-export const Location = styled.Text`
+export const Comment = styled.Text`
   font-size: 14px;
   color: #888;
   margin-bottom: 4px;

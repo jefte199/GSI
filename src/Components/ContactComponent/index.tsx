@@ -1,7 +1,15 @@
 import { Container, ContactIcon, Title, ContactInfo, ContactText } from "./styles";
 import Clipboard from '@react-native-clipboard/clipboard';
 
-const ContactComponent = () => {
+interface Props {
+  route: {
+    params: {
+      home: House
+    }
+  }
+}
+
+export const ContactComponent = () => {
   const copyToClipboard = (text: string) => {
     Clipboard.setString('Texto para copiar');
   };
@@ -33,5 +41,4 @@ const ContactComponent = () => {
   );
 };
 
-export default ContactComponent;
 
