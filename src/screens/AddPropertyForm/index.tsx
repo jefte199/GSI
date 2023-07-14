@@ -2,10 +2,16 @@ import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import dayjs from 'dayjs';
 import { Container, InputContainer, InputLabel } from './styles';
+// components
 import { Header } from '../../Components/Header';
 import { Input } from '../../Components/Input';
 import { Select } from '../../Components/Select';
 import { SelectDataTime } from '../../Components/SelectDataTime';
+import { Button } from '../../Components/Button';
+// types
+import { House } from '../../types/House';
+// SQlite
+import { sql } from '../../SQL';
 
 export function AddPropertyForm() {
   const [newHouse, setNewHouse] = useState<string>('');
@@ -24,6 +30,35 @@ export function AddPropertyForm() {
   const [contactPhone, setContactPhone] = useState<string>('');
   const [contactAddress, setContactAddress] = useState<string>('');
 
+  const house: House = {
+    newHouse: newHouse,
+    rented: rented,
+    selectedDate: selectedDate,
+    garage: garage,
+    price: Number(price),
+    address: address,
+    neighborhood: neighborhood,
+    bathroom: Number(bathroom),
+    rooms: Number(rooms),
+    area: Number(area),
+    comment: comment,
+    imageUrlString: [],
+    contactName: contactName,
+    contactEmail: contactEmail,
+    contactPhone: contactPhone,
+    contactAddress: contactAddress,
+  };
+
+  const create = async () => {
+    await sql.createHouse(house)
+      .then((house) => {
+        console.log('House:', house);
+      })
+      .catch((error) => {
+        console.error('Erro:', error);
+      });
+  }
+
   return (
     <ScrollView>
       <Container>
@@ -32,7 +67,7 @@ export function AddPropertyForm() {
         <InputContainer>
           <InputLabel>Vencimento  {dayjs(selectedDate).format('DD/MM/YYYY')}</InputLabel>
           <SelectDataTime
-          setSelectedOption={setSelectedDate} />
+            setSelectedOption={setSelectedDate} />
         </InputContainer>
 
         <InputContainer>
@@ -132,15 +167,6 @@ export function AddPropertyForm() {
         </InputContainer>
 
         <InputContainer>
-          <InputLabel>Nome do proprietario</InputLabel>
-          <Input
-            value={contactName}
-            onChangeText={setContactName}
-            placeholder="Carlos"
-          />
-        </InputContainer>
-
-        <InputContainer>
           <InputLabel>Email do proprietario</InputLabel>
           <Input
             value={contactEmail}
@@ -167,17 +193,11 @@ export function AddPropertyForm() {
           />
         </InputContainer>
 
+        <Button
+          title='Cadastrar Imovel'
+          type='PRIMARY'
+          onPress={create} />
       </Container>
     </ScrollView>
   )
 }
-
-/*
-  Alugar ou vender - Select
-  Preço - input
-  Quartos - Select
-  Bainheiros - Select
-  Vagas - Select
-  Endereço - Input
-  Bairro - Select
- */
