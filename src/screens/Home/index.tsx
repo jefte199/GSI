@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // Style
@@ -10,10 +10,13 @@ import { Button } from '../../Components/Button';
 import { ListEmpty } from "../../Components/ListEmpty";
 // SQL
 import { sql } from '../../SQL';
+// types
 import { House } from '../../types/House';
+import { card } from '../../types/card';
 
 export function Home() {
   const house: House = {
+    id: 0,
     newHouse: 'Yes',
     rented: 'No',
     selectedDate: '2023-05-17',
@@ -31,9 +34,10 @@ export function Home() {
     contactPhone: '123-456-7890',
     contactAddress: '456 Elm St',
   };
-
-  function createTable() {
-    sql.createTable()
+  // States
+  const [data, setData] = useState<House[]>([]);
+  const createTable = async () => {
+    await sql.createTable()
       .then((house) => {
         console.log('House:', house);
       })
@@ -42,8 +46,8 @@ export function Home() {
       });
   }
 
-  function create() {
-    sql.createHouse(house)
+  const create = async () => {
+    await sql.createHouse(house)
       .then((house) => {
         console.log('House:', house);
       })
@@ -52,43 +56,54 @@ export function Home() {
       });
   }
 
-  function select() {
-    sql.getHouse()
+  const deleteHouseById = async (id: number) => {
+    try {
+      await sql.deleteHouse(id);
+      console.log('House deleted successfully.');
+    } catch (error) {
+      console.error('Failed to delete house:', error);
+    }
+  };
+
+  const select = async () => {
+    await sql.getHouse()
       .then((house) => {
-        console.log('House:', house);
+        console.log("house")
+        console.log(house)
+        setData(house)
+        return house
       })
       .catch((error) => {
-        console.error('Erro:', error);
+        return error
       });
   }
 
   useEffect(() => {
     createTable();
-    navigation.navigate('add_imovel');
+    select();
   }, []);
-
-  const imgCasa = require('../../assets/Casa.jpg');
-  const data = [{ id: 1, title: 'casa 1', location: 'aquela rua', price: '15000R$' }, { id: 2, title: 'casa 2', location: 'aquela rua', price: '95000R$' }, { id: 3, title: 'casa 3', location: 'aquela rua', price: '150R$' }]
 
   const navigation = useNavigation();
 
-  function handleAdd() {
-    select();
+  async function handleAdd() {
     navigation.navigate('add_imovel');
   }
 
-  function handleInfo() {
-    navigation.navigate('info');
+  function handleInfo(info: House | undefined) {
+    navigation.navigate('info', { home: info });
   }
 
-  function myCard() {
+
+
+  const imgCasa = require('../../assets/Casa.jpg');
+  function myCard(item: House) {
     return (
-      <OnClick onPress={handleInfo}>
+      <OnClick onPress={() => handleInfo(item)}>
         <Card
           imageSource={imgCasa}
-          title='Test'
-          location='Rua florencio carneiro'
-          price='1500R$' />
+          comment={item.comment}
+          location={item.address}
+          price={`${item.price}`} />
       </OnClick>
     )
   }
@@ -101,7 +116,7 @@ export function Home() {
 
       <FlatList
         data={data}
-        renderItem={myCard}
+        renderItem={({ item }) => myCard(item)}
         keyExtractor={(item) => `${item.id}`}
         contentContainerStyle={data.length === 0 && { flex: 1 }}
         ListEmptyComponent={() => <ListEmpty message="Cadastre o primeiro Imovel" />}
@@ -114,13 +129,3 @@ export function Home() {
     </Container>
   );
 }
-
-/**
- alugar - comprar
- piscina
- varanda
-
- preço
- comodos banheiras ? quartos ? vagas ?
- bairro
- */
