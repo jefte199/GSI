@@ -25,7 +25,7 @@ export function InfoScreen(home: Props) {
 
   const navigation = useNavigation();
 
-  async function handleAdd() {
+  async function handleHome() {
     navigation.navigate('home');
   }
 
@@ -37,7 +37,7 @@ export function InfoScreen(home: Props) {
       .catch((error) => {
         return error
       });
-      handleAdd();
+      handleHome();
   }
   return (
     <ScrollView>
