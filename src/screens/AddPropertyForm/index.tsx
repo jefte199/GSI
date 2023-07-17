@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
+import { View, Text, Modal } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { Container, InputContainer, InputLabel } from './styles';
 // components
@@ -14,6 +16,7 @@ import { House } from '../../types/House';
 import { sql } from '../../SQL';
 
 export function AddPropertyForm() {
+  const navigation = useNavigation();
   const [newHouse, setNewHouse] = useState<string>('');
   const [rented, setRented] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -29,8 +32,15 @@ export function AddPropertyForm() {
   const [contactEmail, setContactEmail] = useState<string>('');
   const [contactPhone, setContactPhone] = useState<string>('');
   const [contactAddress, setContactAddress] = useState<string>('');
+  // Set modal
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const house: House = {
+    id: 0,
     newHouse: newHouse,
     rented: rented,
     selectedDate: selectedDate,
@@ -49,6 +59,10 @@ export function AddPropertyForm() {
     contactAddress: contactAddress,
   };
 
+  async function handleHome() {
+    navigation.navigate('home');
+  }
+
   const create = async () => {
     await sql.createHouse(house)
       .then((house) => {
@@ -57,6 +71,7 @@ export function AddPropertyForm() {
       .catch((error) => {
         console.error('Erro:', error);
       });
+    handleHome();
   }
 
   return (
@@ -193,10 +208,30 @@ export function AddPropertyForm() {
           />
         </InputContainer>
 
+        <Modal
+          visible={modalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={toggleModal}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: 'white', padding: 20 }}>
+              <Text>This is a modal</Text>
+              <Button
+                title='Canvelar'
+                type='SECONDARY'
+                onPress={toggleModal} />
+              <Button
+                title='Confirmar cadastro'
+                type='PRIMARY'
+                onPress={toggleModal} />
+            </View>
+          </View>
+        </Modal>
         <Button
           title='Cadastrar Imovel'
           type='PRIMARY'
-          onPress={create} />
+          onPress={toggleModal} />
       </Container>
     </ScrollView>
   )
