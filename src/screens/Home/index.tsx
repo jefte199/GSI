@@ -12,7 +12,7 @@ import { ListEmpty } from "../../Components/ListEmpty";
 import { sql } from '../../SQL';
 // types
 import { House } from '../../types/House';
-import { card } from '../../types/card';
+//import { card } from '../../types/card';
 
 export function Home() {
   const house: House = {
@@ -36,6 +36,12 @@ export function Home() {
   };
   // States
   const [data, setData] = useState<House[]>([]);
+
+  useEffect(() => {
+    createTable();
+    select();
+  }, []);
+
   const createTable = async () => {
     await sql.createTable()
       .then((house) => {
@@ -78,11 +84,6 @@ export function Home() {
       });
   }
 
-  useEffect(() => {
-    createTable();
-    select();
-  }, []);
-
   const navigation = useNavigation();
 
   async function handleAdd() {
@@ -92,8 +93,6 @@ export function Home() {
   function handleInfo(info: House | undefined) {
     navigation.navigate('info', { home: info });
   }
-
-
 
   const imgCasa = require('../../assets/Casa.jpg');
   function myCard(item: House) {

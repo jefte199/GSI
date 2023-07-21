@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Modal, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Container, ContainerTags, Title, Image, TagText, Description } from './styles';
 import { priceFormat } from '../../util/priceFormat';
@@ -22,12 +22,17 @@ interface Props {
 
 export function InfoScreen(home: Props) {
   const req = home.route.params.home;
+  const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
 
   async function handleHome() {
     navigation.navigate('home');
   }
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const deleteHouse = async () => {
     await sql.deleteHouse((req.id))
@@ -37,7 +42,7 @@ export function InfoScreen(home: Props) {
       .catch((error) => {
         return error
       });
-      handleHome();
+    handleHome();
   }
   return (
     <ScrollView>
@@ -74,8 +79,29 @@ export function InfoScreen(home: Props) {
           title='Editar'
           type='PRIMARY' />
 
+        <Modal
+          visible={modalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={toggleModal}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: 'white', padding: 20 }}>
+              <Text>Tem certeza que quer excluir essa casa?</Text>
+              <Button
+                title='Cancelar'
+                type='PRIMARY'
+                onPress={toggleModal} />
+              <Button
+                title='Deletar'
+                type='SECONDARY'
+                onPress={deleteHouse} />
+            </View>
+          </View>
+        </Modal>
+
         <Button
-          onPress={deleteHouse}
+          onPress={toggleModal}
           title='Deletar'
           type='SECONDARY' />
       </Container >

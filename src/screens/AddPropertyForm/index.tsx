@@ -17,16 +17,16 @@ import { sql } from '../../SQL';
 
 export function AddPropertyForm() {
   const navigation = useNavigation();
-  const [newHouse, setNewHouse] = useState<string>('');
-  const [rented, setRented] = useState<string>('');
+  const [newHouse, setNewHouse] = useState<string>('Usado');
+  const [rented, setRented] = useState<string>('Livre');
   const [selectedDate, setSelectedDate] = useState<string>('');
-  const [garage, setGarage] = useState<string>("");
+  const [garage, setGarage] = useState<string>('1');
+  const [bathroom, setBathroom] = useState<string>('1');
+  const [rooms, setRooms] = useState<string>('1');
   const [price, setPrice] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [neighborhood, setNeighborhood] = useState<string>('');
-  const [bathroom, setBathroom] = useState<string>("");
-  const [rooms, setRooms] = useState<string>("");
-  const [area, setArea] = useState<string>("");
+  const [area, setArea] = useState<string>('');
   const [comment, setComment] = useState<string>('');
   const [contactName, setContactName] = useState<string>('');
   const [contactEmail, setContactEmail] = useState<string>('');
@@ -186,7 +186,7 @@ export function AddPropertyForm() {
           <Input
             value={contactEmail}
             onChangeText={setContactEmail}
-            placeholder="Carlos"
+            placeholder="Carlos@gmail"
           />
         </InputContainer>
 
@@ -231,7 +231,7 @@ export function AddPropertyForm() {
         <Button
           title='Cadastrar Imovel'
           type='PRIMARY'
-          onPress={toggleModal} />
+          onPress={create} />
       </Container>
     </ScrollView>
   )
