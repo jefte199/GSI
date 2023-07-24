@@ -22,6 +22,12 @@ interface Props {
 
 export function InfoScreen(home: Props) {
   const req = home.route.params.home;
+  const props = {
+    name: req.contactName, 
+    email: req.contactEmail, 
+    phone: req.contactPhone, 
+    adress: req.contactAddress
+  }
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
@@ -69,7 +75,7 @@ export function InfoScreen(home: Props) {
           area={req.area.toString() || "💔"}
         />
 
-        <ContactComponent />
+        <ContactComponent props={props} />
 
         <Button
           title='Compartilhar'
