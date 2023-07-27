@@ -74,8 +74,6 @@ export function Home() {
   const select = async () => {
     await sql.getHouse()
       .then((house) => {
-        console.log("house")
-        console.log(house)
         setData(house)
         return house
       })
