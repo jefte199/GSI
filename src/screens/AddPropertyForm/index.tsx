@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { View, Text, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import dayjs from 'dayjs';
 import { Container, InputContainer, InputLabel } from './styles';
 // components
 import { Header } from '../../Components/Header';
@@ -80,7 +78,6 @@ export function AddPropertyForm() {
         <Header showBackButton={true} />
 
         <InputContainer>
-          <InputLabel>Vencimento  {dayjs(selectedDate).format('DD/MM/YYYY')}</InputLabel>
           <SelectDataTime
             setSelectedOption={setSelectedDate} />
         </InputContainer>
@@ -208,26 +205,6 @@ export function AddPropertyForm() {
           />
         </InputContainer>
 
-        <Modal
-          visible={modalVisible}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={toggleModal}
-        >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ backgroundColor: 'white', padding: 20 }}>
-              <Text>This is a modal</Text>
-              <Button
-                title='Canvelar'
-                type='SECONDARY'
-                onPress={toggleModal} />
-              <Button
-                title='Confirmar cadastro'
-                type='PRIMARY'
-                onPress={toggleModal} />
-            </View>
-          </View>
-        </Modal>
         <Button
           title='Cadastrar Imovel'
           type='PRIMARY'
