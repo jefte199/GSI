@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, Modal, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Container, ContainerTags, Title, Image, TagText, Description } from './styles';
+import dayjs from 'dayjs';
 import { priceFormat } from '../../util/priceFormat';
 import { Header } from '../../Components/Header';
 import { Button } from '../../Components/Button';
 import { Tag } from '../../Components/Tag';
 import { ContactComponent } from '../../Components/ContactComponent';
-import { House } from '../../types/House';
 import { sql } from '../../SQL';
+import { House } from '../../types/House';
 
 const imgCasa = require('../../assets/Casa.jpg');
 
@@ -23,15 +24,16 @@ interface Props {
 export function InfoScreen(home: Props) {
   const req = home.route.params.home;
   const props = {
-    name: req.contactName, 
-    email: req.contactEmail, 
-    phone: req.contactPhone, 
+    name: req.contactName,
+    email: req.contactEmail,
+    phone: req.contactPhone,
     adress: req.contactAddress
   }
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
 
+  console.log(req)
   async function handleHome() {
     navigation.navigate('home');
   }
@@ -59,7 +61,7 @@ export function InfoScreen(home: Props) {
         <ContainerTags>
           <TagText type='PRIMARY'>{req.rented || "💔"}</TagText>
           <TagText type='PRIMARY'>{req.newHouse || "💔"}</TagText>
-          <TagText type='SECONDARY'>{req.selectedDate || "💔"}</TagText>
+          <TagText type='SECONDARY'>{dayjs(req.selectedDate).format('DD/MM/YYYY') || "💔"}</TagText>
         </ContainerTags>
 
         <Title> R$ {priceFormat(req.price) || "💔"}</Title>
@@ -111,6 +113,7 @@ export function InfoScreen(home: Props) {
           title='Deletar'
           type='SECONDARY' />
       </Container >
+
     </ScrollView>
   );
 }
