@@ -18,15 +18,16 @@ const backgroundColor = (theme: DefaultTheme, type: ButtonTypeStyleProps) => {
 
 export const Container = styled(TouchableOpacity)<Props>`
   flex: 1;
-  height: 3.5rem;
+  min-height: 56px;
+  max-height: 56px;
+  margin-bottom: 4px;
+  border-radius: 6px;
   align-items: center;
-  margin-bottom: 0.25rem;
-  border-radius: 0.375rem;
   justify-content: center;
   background-color: ${({ theme, type }) => backgroundColor(theme, type)};
 `;
 
 export const Title = styled.Text`
   color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${({ theme }) => theme.FONT_SIZE.MD / 16}rem;
+  font-size: ${({ theme }) => `${theme.FONT_SIZE.MD}px`};
 `;
