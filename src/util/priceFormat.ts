@@ -3,5 +3,6 @@ export function priceFormat(value: number) {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
+  
   return formattedValue.replace(',', '.');
 }

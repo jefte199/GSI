@@ -1,19 +1,19 @@
 export interface House {
   id: number;
-  newHouse: string;
-  rented: string;
-  selectedDate: string;
-  garage: string;
-  price: number;
-  address: string;
-  neighborhood: string;
-  bathroom: number;
-  rooms: number;
   area: number;
+  price: number;
+  rooms: number;
+  rented: string;
+  garage: string;
+  address: string;
   comment: string;
-  imageUrlString: string[]; // Array de URLs de imagens
+  newHouse: string;
+  bathroom: number;
   contactName: string;
+  neighborhood: string;
+  selectedDate: string;
   contactEmail: string;
   contactPhone: string;
   contactAddress: string;
+  imageUrlString: string[]; // Array de URLs de imagens
 }
