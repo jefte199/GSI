@@ -1,7 +1,5 @@
-import { Container } from "./styles";
+import { Container } from './styles';
 
-export function Line () {
-  return (
-    <Container />
-  )
+export function Line() {
+  return <Container />;
 }
