@@ -1,15 +1,18 @@
+import { Text } from '../Text';
+
 import { TouchableOpacityProps } from 'react-native';
-import { Container, Title, ButtonTypeStyleProps } from './styles';
+
+import { Container, ButtonTypeStyleProps } from './styles';
 
 type Props = TouchableOpacityProps & {
   title: string;
   type: ButtonTypeStyleProps;
 };
 
-export function Button({ title, type, ...res }: Props) {
+export function Button({ title, type, ...rest }: Props) {
   return (
-    <Container type={type} {...res}>
-      <Title>{title}</Title>
+    <Container type={type} {...rest}>
+      <Text weight="700">{title}</Text>
     </Container>
   );
 }

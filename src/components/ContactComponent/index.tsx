@@ -1,41 +1,53 @@
-import { Container, ContactIcon, Title, ContactInfo, ContactText } from "./styles";
+import { Text } from '../Text';
+
+import phoneIcon from './assets/phone-icon.png';
+import emailIcon from './assets/email-icon.png';
+import personIcon from './assets/person-icon.png';
+import addressIcon from './assets/address-icon.png';
+
+import { Container, ContactIcon, ContactInfo } from './styles';
 
 interface Props {
   props: {
     name: string;
     email: string;
     phone: string;
-    adress: string;
-  }
+    address: string;
+  };
 }
 
-export const ContactComponent = (props: Props) => {
+export const ContactComponent = ({ props }: Props) => {
+  const { address, email, name, phone } = props;
 
   return (
     <Container>
-      <Title>Informações de contato do proprietario</Title>
+      <Text color="#888" size={18} weight="700">
+        Informações de contato do proprietário:
+      </Text>
 
       <ContactInfo>
-        <ContactIcon source={require('./assets/person-icon.png')} />
-        <ContactText>{props.props.name}</ContactText>
+        <ContactIcon source={personIcon} />
+
+        <Text>{name}</Text>
       </ContactInfo>
 
       <ContactInfo>
-        <ContactIcon source={require('./assets/email-icon.png')} />
-        <ContactText>{props.props.email}</ContactText>
+        <ContactIcon source={emailIcon} />
+
+        <Text>{email}</Text>
       </ContactInfo>
 
       <ContactInfo>
-        <ContactIcon source={require('./assets/phone-icon.png')} />
-        <ContactText>{props.props.phone}</ContactText>
+        <ContactIcon source={phoneIcon} />
+
+        <Text>{phone}</Text>
       </ContactInfo>
 
       <ContactInfo>
-        <ContactIcon source={require('./assets/address-icon.png')} />
-        <ContactText>{props.props.adress}</ContactText>
+        <ContactIcon source={addressIcon} />
+
+        <Text>{address}</Text>
       </ContactInfo>
     </Container>
   );
 };
-
-

@@ -1,40 +1,68 @@
-import { Container, ContainerIcon, CarIcon, ShowerIcon, BedIcon, HouseLineIcon, Number, Text } from './styles';
+import { Text } from '../Text';
+
+import {
+  CarIcon,
+  BedIcon,
+  Container,
+  ShowerIcon,
+  HouseLineIcon,
+  ContainerIcon,
+} from './styles';
 
 interface Props {
+  area: string;
+  numberBed: string;
   numberGarage: string;
   numberShower: string;
-  numberBed: string;
-  area: string;
 }
 
-export const Tag: React.FC<Props> = ({ numberGarage, numberShower, numberBed, area }) => {
+export const Tag: React.FC<Props> = ({
+  numberGarage,
+  numberShower,
+  numberBed,
+  area,
+}) => {
   return (
     <Container>
-
       <ContainerIcon>
         <CarIcon />
-        <Number>{numberGarage}</Number>
+
+        <Text size={18} weight="700" style={{ marginBottom: 4 }}>
+          {numberGarage}
+        </Text>
+
         <Text>Vagas</Text>
       </ContainerIcon>
 
       <ContainerIcon>
         <ShowerIcon />
-        <Number>{numberShower}</Number>
+
+        <Text size={18} weight="700" style={{ marginBottom: 4 }}>
+          {numberShower}
+        </Text>
+
         <Text>Bainheiros</Text>
       </ContainerIcon>
 
       <ContainerIcon>
         <BedIcon />
-        <Number>{numberBed}</Number>
+
+        <Text size={18} weight="700" style={{ marginBottom: 4 }}>
+          {numberBed}
+        </Text>
+
         <Text>Quartos</Text>
       </ContainerIcon>
 
       <ContainerIcon>
         <HouseLineIcon />
-        <Number>{area}m²</Number>
+
+        <Text size={18} weight="700" style={{ marginBottom: 4 }}>
+          {area}m²
+        </Text>
+
         <Text>Área</Text>
       </ContainerIcon>
     </Container>
   );
 };
-

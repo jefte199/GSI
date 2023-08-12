@@ -26,8 +26,3 @@ export const Container = styled(TouchableOpacity)<Props>`
   justify-content: center;
   background-color: ${({ theme, type }) => backgroundColor(theme, type)};
 `;
-
-export const Title = styled.Text`
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${({ theme }) => `${theme.FONT_SIZE.MD}px`};
-`;
