@@ -19,8 +19,8 @@ export default {
     ORANGE_100: '#F75B00',
   },
   FONT_FAMILY: {
-    BOLD: 'Roboto_700Bold',
-    REGULAR: 'Roboto_400Regular',
+    BOLD: '700',
+    REGULAR: '400',
   },
   FONT_SIZE: {
     SM: 14,
