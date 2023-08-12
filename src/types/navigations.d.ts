@@ -1,9 +1,9 @@
+import { House } from './House';
+
 export declare global {
-  namespace ReactNavigation {
-    interface RootParamList {
-      home: undefined;
-      info: undefined;
-      add_imovel: undefined;
-    }
-  }
+  type AppStackParamList = {
+    home: undefined;
+    add_imovel: undefined;
+    info: { home: House | undefined };
+  };
 }
