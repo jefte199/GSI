@@ -1,44 +1,43 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
+
+import { backgroundColor } from '../../components/Button/styles';
+
+type Props = { type: StyleProps };
 
 export type StyleProps = 'PRIMARY' | 'SECONDARY' | 'TERTIARY';
 
-type Props = {
-  type: StyleProps
-}
-
-export const Container = styled(SafeAreaView)`
+export const Container = styled.SafeAreaView`
   flex: 1;
-  padding: 24px;
-`;
-
-export const ContainerTags = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-export const Title = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_700};
-  font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
-`;
-
-export const TagText = styled.Text<Props>`
-  margin-top: 5px;
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-  background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GREEN_700 : type === 'SECONDARY' ? theme.COLORS.RED_DARK : theme.COLORS.ORANGE_100};
-  padding: 5px 8px;
-  border-radius: 5px;
-`;
-
-export const Description = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 24px 24px 0 24px;
 `;
 
 export const Image = styled.Image`
   width: 100%;
   height: 200px;
+  border-radius: 8px;
+`;
+
+export const ContainerTag = styled.View`
+  margin-top: 16px;
+`;
+
+export const ContainerPrice = styled.View`
+  gap: 6px;
+  margin-top: 16px;
+  align-items: center;
+  flex-direction: row;
+`;
+
+export const TagText = styled.Text<Props>`
+  margin-top: 5px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  color: ${({ theme }) => theme.COLORS.WHITE};
+  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+  background-color: ${({ theme, type }) => backgroundColor(theme, type)};
+`;
+
+export const ContainerDescription = styled.View`
+  margin-top: 16px;
+  margin-bottom: 24px;
 `;

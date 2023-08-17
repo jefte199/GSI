@@ -1,119 +1,179 @@
-import React, { useState } from 'react';
-import { View, Text, Modal, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Container, ContainerTags, Title, Image, TagText, Description } from './styles';
-import dayjs from 'dayjs';
-import { priceFormat } from '../../util/priceFormat';
-import { Header } from '../../Components/Header';
-import { Button } from '../../Components/Button';
-import { Tag } from '../../Components/Tag';
-import { ContactComponent } from '../../Components/ContactComponent';
-import { sql } from '../../SQL';
-import { House } from '../../types/House';
+import { useState } from 'react';
 
-const imgCasa = require('../../assets/Casa.jpg');
+import { useTheme } from 'styled-components';
 
-interface Props {
-  route: {
-    params: {
-      home: House
-    }
-  }
+import { Feather, Ionicons } from '@expo/vector-icons';
+
+import { houseDatabaseQueries } from '../../SQL';
+
+import imgImageNotFound from '../../assets/imgNf.png';
+
+import { priceFormat } from '../../utils/priceFormat';
+
+import { ScrollView, Share } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { Tag } from '../../components/Tag';
+import { Text } from '../../components/Text';
+import { Button } from '../../components/Button';
+import { Header } from '../../components/Header';
+import { ModalDelete } from './components/ModalDelete';
+import { ContactComponent } from '../../components/ContactComponent';
+
+import {
+  Image,
+  Container,
+  ContainerTag,
+  ContainerPrice,
+  ContainerDescription,
+} from './styles';
+
+type InfoRouteProp = RouteProp<AppStackParamList, 'info'>;
+
+type TypeNavigation = NativeStackNavigationProp<AppStackParamList>;
+
+interface InfoProps {
+  navigation: TypeNavigation;
 }
 
-export function InfoScreen(home: Props) {
-  const req = home.route.params.home;
+export function InfoScreen({ navigation }: InfoProps) {
+  const { COLORS } = useTheme();
+
+  const route = useRoute<InfoRouteProp>();
+
+  const house = route.params.house;
+
+  const {
+    id,
+    area,
+    rooms,
+    price,
+    garage,
+    rented,
+    comment,
+    newHouse,
+    bathroom,
+    imageUrl,
+    contactName,
+    contactEmail,
+    contactPhone,
+    contactAddress,
+  } = house;
+
   const props = {
-    name: req.contactName,
-    email: req.contactEmail,
-    phone: req.contactPhone,
-    adress: req.contactAddress
-  }
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const navigation = useNavigation();
-
-  console.log(req)
-  async function handleHome() {
-    navigation.navigate('home');
-  }
-
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
+    name: contactName,
+    email: contactEmail,
+    phone: contactPhone,
+    address: contactAddress,
   };
 
-  const deleteHouse = async () => {
-    await sql.deleteHouse((req.id))
-      .then((house) => {
-        console.log(house)
-      })
-      .catch((error) => {
-        return error
-      });
-    handleHome();
-  }
+  const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
+
+  const goPageHome = () => {
+    navigation.navigate('home');
+  };
+
+  const goPageUpdate = () => {
+    navigation.navigate('update', { house });
+  };
+
+  const toggleModalDelete = () => {
+    setIsOpenModalDelete(!isOpenModalDelete);
+  };
+
+  const handleDeleteHouse = async () => {
+    try {
+      await houseDatabaseQueries.deleteHouse(id);
+
+      goPageHome();
+    } catch (error) {
+      console.error('Error deleting house:', error);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      const message = `
+      Detalhes do Imóvel:
+        - Situação: ${rented},
+        - Área em m²: ${area},
+        - Condição: ${newHouse},
+        - Total de quartos: ${rooms},
+        - Vagas / Garagens: ${garage},
+        - Preço: ${priceFormat(price)},
+        - Total de banheiros: ${bathroom},
+        - Comentários / Detalhes: ${comment}.
+      `;
+
+      await Share.share({ message });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const img = imageUrl ? { uri: imageUrl } : imgImageNotFound;
+
   return (
-    <ScrollView>
-      <Container>
-        <Header showBackButton={true} />
-        <Image source={imgCasa} />
+    <Container>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Header navigation={navigation} showBackButton={true} />
 
-        <ContainerTags>
-          <TagText type='PRIMARY'>{req.rented || "💔"}</TagText>
-          <TagText type='PRIMARY'>{req.newHouse || "💔"}</TagText>
-          <TagText type='SECONDARY'>{dayjs(req.selectedDate).format('DD/MM/YYYY') || "💔"}</TagText>
-        </ContainerTags>
+        <Image source={img} />
 
-        <Title> R$ {priceFormat(req.price) || "💔"}</Title>
-        <Description>
-          {req.comment || "💔"}
-        </Description>
+        <ContainerPrice>
+          <Ionicons color="green" name="cash-outline" size={24} />
 
+          <Text weight="700">{priceFormat(price) || '-'}</Text>
+        </ContainerPrice>
+
+        <ContainerTag>
+          <Feather name="home" size={24} color={COLORS.ORANGE_100} />
+
+          <Text>
+            O imóvel é {newHouse.toLowerCase()} e está {rented.toLowerCase()}
+          </Text>
+        </ContainerTag>
+
+        <ContainerDescription>
+          <Ionicons size={24} name="chatbox-outline" color={COLORS.GRAY_300} />
+
+          <Text>{comment || '-'}</Text>
+        </ContainerDescription>
 
         <Tag
-          numberGarage={req.garage || "💔"}
-          numberShower={req.bathroom.toString() || "💔"}
-          numberBed={req.rooms.toString() || "💔"}
-          area={req.area.toString() || "💔"}
+          area={area?.toString() || '-'}
+          numberBed={rooms?.toString() || '-'}
+          numberGarage={garage.toString() || '-'}
+          numberShower={bathroom?.toString() || '-'}
         />
 
         <ContactComponent props={props} />
 
-        <Button
-          title='Compartilhar'
-          type='TERTIARY' />
+        <Button type="PRIMARY" onPress={goPageUpdate}>
+          <Ionicons color={'white'} name="pencil-outline" size={20} /> Editar
+        </Button>
+
+        <Button type="SECONDARY" onPress={toggleModalDelete}>
+          <Ionicons color={'white'} name="trash-outline" size={20} /> Deletar
+        </Button>
 
         <Button
-          title='Editar'
-          type='PRIMARY' />
-
-        <Modal
-          visible={modalVisible}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={toggleModal}
+          type="TERTIARY"
+          onPress={handleShare}
+          style={{ marginBottom: 16 }}
         >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ backgroundColor: 'white', padding: 20 }}>
-              <Text>Tem certeza que quer excluir essa casa?</Text>
-              <Button
-                title='Cancelar'
-                type='PRIMARY'
-                onPress={toggleModal} />
-              <Button
-                title='Deletar'
-                type='SECONDARY'
-                onPress={deleteHouse} />
-            </View>
-          </View>
-        </Modal>
+          <Ionicons color={'white'} name="share-outline" size={20} />{' '}
+          Compartilhar
+        </Button>
 
-        <Button
-          onPress={toggleModal}
-          title='Deletar'
-          type='SECONDARY' />
-      </Container >
-
-    </ScrollView>
+        <ModalDelete
+          toggle={toggleModalDelete}
+          isOpen={isOpenModalDelete}
+          onDeleteHouse={handleDeleteHouse}
+        />
+      </ScrollView>
+    </Container>
   );
 }
