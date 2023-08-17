@@ -4,12 +4,17 @@ import { useTheme } from 'styled-components';
 
 import { ActivityIndicator } from 'react-native';
 
-export const Loading = () => {
+interface Props {
+  color?: string;
+  size?: 'large' | 'small';
+}
+
+export const Loading = ({ color, size = 'large' }: Props) => {
   const { COLORS } = useTheme();
 
   return (
     <Container>
-      <ActivityIndicator color={`${COLORS.ORANGE_100}`} size="large" />
+      <ActivityIndicator color={color ?? `${COLORS.ORANGE_100}`} size={size} />
     </Container>
   );
 };
