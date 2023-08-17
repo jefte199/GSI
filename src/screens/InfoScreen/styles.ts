@@ -17,6 +17,18 @@ export const Image = styled.Image`
   border-radius: 8px;
 `;
 
+export const ContainerImage = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ButtonShareImage = styled.TouchableOpacity`
+  top: 10px;
+  right: 10px;
+  position: absolute;
+`;
+
 export const ContainerTag = styled.View`
   margin-top: 16px;
 `;

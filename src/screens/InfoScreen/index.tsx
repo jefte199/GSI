@@ -2,9 +2,10 @@ import { useState } from 'react';
 
 import { useTheme } from 'styled-components';
 
-import { Feather, Ionicons } from '@expo/vector-icons';
-
 import { houseDatabaseQueries } from '../../SQL';
+
+import * as Sharing from 'expo-sharing';
+import { Feather, Ionicons } from '@expo/vector-icons';
 
 import imgImageNotFound from '../../assets/imgNf.png';
 
@@ -27,6 +28,8 @@ import {
   Container,
   ContainerTag,
   ContainerPrice,
+  ContainerImage,
+  ButtonShareImage,
   ContainerDescription,
 } from './styles';
 
@@ -93,7 +96,15 @@ export function InfoScreen({ navigation }: InfoProps) {
     }
   };
 
-  const handleShare = async () => {
+  const handleShareImage = async () => {
+    try {
+      await Sharing.shareAsync(imageUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleShareContent = async () => {
     try {
       const message = `
       Detalhes do Imóvel:
@@ -120,7 +131,17 @@ export function InfoScreen({ navigation }: InfoProps) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header navigation={navigation} showBackButton={true} />
 
-        <Image source={img} />
+        <ContainerImage>
+          <Image source={img} />
+
+          <ButtonShareImage onPress={handleShareImage}>
+            <Ionicons
+              size={32}
+              name="share-outline"
+              color={COLORS.ORANGE_100}
+            />
+          </ButtonShareImage>
+        </ContainerImage>
 
         <ContainerPrice>
           <Ionicons color="green" name="cash-outline" size={24} />
@@ -161,7 +182,7 @@ export function InfoScreen({ navigation }: InfoProps) {
 
         <Button
           type="TERTIARY"
-          onPress={handleShare}
+          onPress={handleShareContent}
           style={{ marginBottom: 16 }}
         >
           <Ionicons color={'white'} name="share-outline" size={20} />{' '}
