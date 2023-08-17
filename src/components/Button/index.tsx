@@ -1,18 +1,24 @@
 import { Text } from '../Text';
 
+import { useTheme } from 'styled-components';
+
 import { TouchableOpacityProps } from 'react-native';
 
 import { Container, ButtonTypeStyleProps } from './styles';
 
 type Props = TouchableOpacityProps & {
-  title: string;
+  children: React.ReactNode;
   type: ButtonTypeStyleProps;
 };
 
-export function Button({ title, type, ...rest }: Props) {
+export function Button({ children, type, ...rest }: Props) {
+  const { COLORS } = useTheme();
+
   return (
     <Container type={type} {...rest}>
-      <Text weight="700">{title}</Text>
+      <Text color={COLORS.WHITE} weight="700">
+        {children}
+      </Text>
     </Container>
   );
 }
