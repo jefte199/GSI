@@ -1,6 +1,6 @@
-import themes from '../../themes';
-
 import { ReactNode } from 'react';
+
+import { useTheme } from 'styled-components';
 
 import { Text as TextReactNative, TextStyle } from 'react-native';
 
@@ -21,11 +21,13 @@ export const Text = ({
   opacity,
   children,
 }: TextProps) => {
+  const { COLORS } = useTheme();
+
   const styleText = {
     ...style,
     opacity: opacity || 1,
     fontSize: size ? size : 16,
-    color: color || themes.COLORS.WHITE,
+    color: color || COLORS.GRAY_400,
     fontFamily: weight ? `Roboto-${weight}` : 'Roboto-400',
   };
 
