@@ -1,19 +1,24 @@
-export interface House {
-  id: number;
+export interface HouseBase {
   area: number;
   price: number;
   rooms: number;
+  garage: number;
   rented: string;
-  garage: string;
   address: string;
   comment: string;
   newHouse: string;
   bathroom: number;
+  imageUrl: string;
   contactName: string;
   neighborhood: string;
-  selectedDate: string;
   contactEmail: string;
   contactPhone: string;
+  selectedDate?: string;
   contactAddress: string;
-  imageUrlString: string[]; // Array de URLs de imagens
+}
+
+export interface House extends HouseBase {}
+
+export interface HouseWithId extends HouseBase {
+  id: number;
 }
