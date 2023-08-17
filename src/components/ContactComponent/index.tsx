@@ -1,11 +1,8 @@
 import { Text } from '../Text';
 
-import phoneIcon from './assets/phone-icon.png';
-import emailIcon from './assets/email-icon.png';
-import personIcon from './assets/person-icon.png';
-import addressIcon from './assets/address-icon.png';
+import { Container, ContactInfo } from './styles';
 
-import { Container, ContactIcon, ContactInfo } from './styles';
+import { Ionicons, Feather } from '@expo/vector-icons';
 
 interface Props {
   props: {
@@ -21,30 +18,30 @@ export const ContactComponent = ({ props }: Props) => {
 
   return (
     <Container>
-      <Text color="#888" size={18} weight="700">
+      <Text size={18} style={{ marginBottom: 8 }} weight="700">
         Informações de contato do proprietário:
       </Text>
 
       <ContactInfo>
-        <ContactIcon source={personIcon} />
+        <Feather name="user" size={20} color="black" />
 
         <Text>{name}</Text>
       </ContactInfo>
 
       <ContactInfo>
-        <ContactIcon source={emailIcon} />
+        <Feather name="mail" size={20} color="red" />
 
         <Text>{email}</Text>
       </ContactInfo>
 
       <ContactInfo>
-        <ContactIcon source={phoneIcon} />
+        <Feather name="phone" size={20} color="green" />
 
         <Text>{phone}</Text>
       </ContactInfo>
 
       <ContactInfo>
-        <ContactIcon source={addressIcon} />
+        <Ionicons color="black" name="location-outline" size={20} />
 
         <Text>{address}</Text>
       </ContactInfo>
