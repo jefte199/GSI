@@ -1,9 +1,10 @@
-import { House } from './House';
+import { HouseWithId } from './House';
 
 export declare global {
   type AppStackParamList = {
-    home: undefined;
     add_imovel: undefined;
-    info: { home: House | undefined };
+    info: { house: HouseWithId };
+    update: { house: HouseWithId };
+    home: { isUpdateHouses?: boolean } | undefined;
   };
 }
