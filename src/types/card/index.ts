@@ -4,5 +4,5 @@ export interface card {
   price: string;
   comment: string;
   location: string;
-  imageSource: ImageSourcePropType;
+  imageSource: ImageSourcePropType | string;
 }
