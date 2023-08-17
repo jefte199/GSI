@@ -11,11 +11,17 @@ export const Container = styled.View`
   background-color: #fff;
 `;
 
+export const ContainerText = styled.View`
+  gap: 8px;
+  flex-direction: row;
+`;
+
 export const Image = styled.Image`
   width: 100%;
   height: 200px;
 `;
 
 export const InfoContainer = styled.View`
+  gap: 6px;
   padding: 16px;
 `;
