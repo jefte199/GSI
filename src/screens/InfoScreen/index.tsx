@@ -134,13 +134,15 @@ export function InfoScreen({ navigation }: InfoProps) {
         <ContainerImage>
           <Image source={img} />
 
-          <ButtonShareImage onPress={handleShareImage}>
-            <Ionicons
-              size={32}
-              name="share-outline"
-              color={COLORS.ORANGE_100}
-            />
-          </ButtonShareImage>
+          {!!imageUrl && (
+            <ButtonShareImage onPress={handleShareImage}>
+              <Ionicons
+                size={32}
+                name="share-outline"
+                color={COLORS.ORANGE_100}
+              />
+            </ButtonShareImage>
+          )}
         </ContainerImage>
 
         <ContainerPrice>
