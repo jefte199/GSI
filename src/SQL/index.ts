@@ -1,142 +1,168 @@
 import { db } from '../database';
-import { House } from '../types/House';
 
-export const sql = {
-  createTable: () => {
-    return new Promise((resolve, reject) => {
-      db.transaction((transaction) => {
-        transaction.executeSql(
-          `CREATE TABLE IF NOT EXISTS houses (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            newHouse TEXT,
-            rented TEXT,
-            selectedDate TEXT,
-            garage TEXT,
-            price INTEGER,
-            address TEXT,
-            neighborhood TEXT,
-            bathroom INTEGER,
-            rooms INTEGER,
-            area INTEGER,
-            comment TEXT,
-            imageURLs TEXT,
-            contactName TEXT,
-            contactEmail TEXT,
-            contactPhone TEXT,
-            contactAddress TEXT
-          );
-          `, [],
-          (_, result) => {
-            console.log('Table created successfully');
-          },
-          (_, error) => {
-            console.log('Error creating table:', error);
-          }
-        );
-      });
+import { House, HouseWithId } from '../types/House';
+
+async function executeQuery(query: string, params: any[] = []): Promise<any> {
+  return new Promise((resolve, reject) => {
+    db.transaction((transaction) => {
+      transaction.executeSql(
+        query,
+        params,
+        (_, result) => resolve(result),
+        (_, error) => {
+          reject(error);
+          return !!error;
+        }
+      );
     });
+  });
+}
+
+export const houseDatabaseQueries = {
+  createTable: async () => {
+    const query = `
+      CREATE TABLE IF NOT EXISTS houses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        rented TEXT,
+        area INTEGER,
+        address TEXT,
+        comment TEXT,
+        newHouse TEXT,
+        price INTEGER,
+        rooms INTEGER,
+        imageUrl TEXT,
+        garage INTEGER,
+        bathroom INTEGER,
+        contactName TEXT,
+        contactEmail TEXT,
+        neighborhood TEXT,
+        contactPhone TEXT,
+        selectedDate TEXT,
+        contactAddress TEXT
+      );
+    `;
+
+    await executeQuery(query);
   },
 
-  createHouse: ({
-    newHouse, rented, selectedDate, garage, price, address, neighborhood, bathroom,
-    rooms, area, comment, imageUrlString, contactName, contactEmail, contactPhone, contactAddress, }: House) => {
-    return new Promise((resolve, reject) => {
-      db.transaction((transaction) => {
-        transaction.executeSql(
-          `INSERT INTO houses (
-            newHouse, rented, selectedDate, garage, price, address, neighborhood,
-            bathroom, rooms, area, comment, imageUrls, contactName, contactEmail, contactPhone,
-            contactAddress
-          )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-          [
-            newHouse, rented, selectedDate, garage, price, address, neighborhood, bathroom,
-            rooms, area, comment, JSON.stringify(imageUrlString), // Converte o array de URLs para uma string JSON
-            contactName, contactEmail, contactPhone, contactAddress,
-          ],
-          (_, { rowsAffected, insertId }) => {
-            if (rowsAffected > 0) {
-              resolve(insertId);
-            } else {
-              reject('Failed to insert user');
-            }
-          },
-          (_, error) => {
-            reject(error);
-          }
-        );
-      });
-    });
+  createHouse: async (house: House) => {
+    const query = `
+      INSERT INTO houses (
+        area, price, rooms, garage, rented, comment, 
+        address, newHouse, bathroom, imageUrl, contactName, neighborhood,
+        selectedDate, contactEmail, contactPhone, contactAddress
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+
+    const params = [
+      house.area,
+      house.price,
+      house.rooms,
+      house.garage,
+      house.rented,
+      house.comment,
+      house.address,
+      house.newHouse,
+      house.bathroom,
+      house.imageUrl,
+      house.contactName,
+      house.neighborhood,
+      house.selectedDate,
+      house.contactEmail,
+      house.contactPhone,
+      house.contactAddress,
+    ];
+
+    const result = await executeQuery(query, params);
+
+    if (result.rowsAffected > 0) return result.insertId;
+
+    throw new Error('Failed to insert house');
   },
 
-  getHouseById: (houseId: number): Promise<House> => {
-    return new Promise<House>((resolve, reject) => {
-      db.transaction((transaction) => {
-        transaction.executeSql(
-          'SELECT * FROM houses WHERE id = ?;',
-          [houseId],
-          (_, { rows }) => {
-            if (rows.length > 0) {
-              const house = rows.item(0) as House; // Obtém o primeiro registro encontrado
-              resolve(house);
-            } else {
-              reject(new Error('house not found'));
-            }
-          },
-          (_, error) => {
-            reject(error);
-          }
-        );
-      });
-    });
+  updateHouse: async (house: HouseWithId) => {
+    const query = `
+      UPDATE houses
+      SET
+        area = ?,
+        price = ?,
+        rooms = ?,
+        garage = ?,
+        rented = ?,
+        comment = ?,
+        address = ?,
+        newHouse = ?,
+        bathroom = ?,
+        imageUrl = ?,
+        contactName = ?,
+        neighborhood = ?,
+        selectedDate = ?,
+        contactEmail = ?,
+        contactPhone = ?,
+        contactAddress = ?
+      WHERE id = ?;
+    `;
+
+    const params = [
+      house.area,
+      house.price,
+      house.rooms,
+      house.garage,
+      house.rented,
+      house.comment,
+      house.address,
+      house.newHouse,
+      house.bathroom,
+      house.imageUrl,
+      house.contactName,
+      house.neighborhood,
+      house.selectedDate,
+      house.contactEmail,
+      house.contactPhone,
+      house.contactAddress,
+      house.id,
+    ];
+
+    const result = await executeQuery(query, params);
+
+    if (result.rowsAffected > 0) return true;
+
+    throw new Error('Failed to update house');
   },
 
-  getHouse: () => {
-    return new Promise<House[]>((resolve, reject) => {
-      db.transaction((transaction) => {
-        transaction.executeSql(
-          'SELECT * FROM houses;',
-          [],
-          (_, { rows }) => {
-            if (rows.length > 0) {
-              const houseList: House[] = [];
-              for (let i = 0; i < rows.length; i++) {
-                const house = rows.item(i) as House;
-                houseList.push(house);
-              }
-              resolve(houseList);
-            } else {
-              reject(new Error('House not found'));
-            }
-          },
-          (_, error) => {
-            reject(error);
-          }
-        );
-      });
-    });
+  getHouseById: async (houseId: number): Promise<HouseWithId> => {
+    const query = 'SELECT * FROM houses WHERE id = ?;';
+    const params = [houseId];
+
+    const result = await executeQuery(query, params);
+
+    if (result.rows.length === 0) throw new Error('House not found');
+
+    return result.rows.item(0) as HouseWithId;
   },
 
-  deleteHouse: (id: number) => {
-    return new Promise<void>((resolve, reject) => {
-      db.transaction((transaction) => {
-        transaction.executeSql(
-          'DELETE FROM houses WHERE id = ?;',
-          [id],
-          (_, { rowsAffected }) => {
-            if (rowsAffected > 0) {
-              resolve();
-            } else {
-              reject(new Error('House not found'));
-            }
-          },
-          (_, error) => {
-            reject(error);
-          }
-        );
-      });
-    });
+  getHouses: async (): Promise<HouseWithId[]> => {
+    const query = 'SELECT * FROM houses;';
+    const result = await executeQuery(query);
+
+    const houseList: HouseWithId[] = [];
+
+    for (let index = 0; index < result.rows.length; index++) {
+      houseList.push(result.rows.item(index) as HouseWithId);
+    }
+
+    return houseList;
   },
 
+  deleteHouse: async (id: number) => {
+    const query = 'DELETE FROM houses WHERE id = ?;';
+    const params = [id];
+
+    const result = await executeQuery(query, params);
+
+    if (result.rowsAffected > 0) return;
+
+    throw new Error('House not found');
+  },
 };
-
