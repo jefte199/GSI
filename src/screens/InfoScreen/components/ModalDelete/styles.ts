@@ -10,5 +10,5 @@ export const Container = styled.View`
 export const ContentModal = styled.View`
   padding: 20px;
   border-radius: 8px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.COLORS.GRAY_100};
 `;
