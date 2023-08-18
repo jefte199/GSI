@@ -2,6 +2,8 @@ import { db } from '../database';
 
 import { House, HouseWithId } from '../types/House';
 
+import { PropertySearchFilters } from '../types/propertySearchFilters';
+
 async function executeQuery(query: string, params: any[] = []): Promise<any> {
   return new Promise((resolve, reject) => {
     db.transaction((transaction) => {
@@ -129,6 +131,46 @@ export const houseDatabaseQueries = {
     if (result.rowsAffected > 0) return true;
 
     throw new Error('Failed to update house');
+  },
+
+  filterHouses: async (options: PropertySearchFilters) => {
+    const query = `
+    SELECT * FROM houses
+    WHERE
+      (area <= ? AND ? > 0) OR
+      (price <= ? AND ? > 0) OR
+      rooms = ? OR
+      garage = ? OR
+      rented = ? OR
+      address = ? OR
+      newHouse = ? OR
+      bathroom = ? OR
+      neighborhood = ?
+  `;
+
+    const params = [
+      options.area,
+      options.area,
+      options.price,
+      options.price,
+      options.rooms,
+      options.garage,
+      options.rented,
+      options.address,
+      options.newHouse,
+      options.bathroom,
+      options.neighborhood,
+    ];
+
+    const result = await executeQuery(query, params);
+
+    const houseList: HouseWithId[] = [];
+
+    for (let index = 0; index < result.rows.length; index++) {
+      houseList.push(result.rows.item(index) as HouseWithId);
+    }
+
+    return houseList;
   },
 
   getHouseById: async (houseId: number): Promise<HouseWithId> => {
