@@ -11,21 +11,21 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type TypeNavigation = NativeStackNavigationProp<AppStackParamList>;
 
 interface HeaderProps {
+  onGoBack?: () => void;
   showBackButton: boolean;
-  navigation: TypeNavigation;
+  navigation?: TypeNavigation;
 }
 
-export function Header({ navigation, showBackButton }: HeaderProps) {
-  const { COLORS } = useTheme();
+export function Header(props: HeaderProps) {
+  const { navigation, showBackButton } = props;
+  const { onGoBack = navigation!.goBack } = props;
 
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
+  const { COLORS } = useTheme();
 
   return (
     <Container>
       {showBackButton && (
-        <BackButton onPress={handleGoBack}>
+        <BackButton onPress={onGoBack}>
           <Ionicons
             size={32}
             color={COLORS.ORANGE_100}
