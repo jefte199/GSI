@@ -4,12 +4,12 @@ import { useTheme } from 'styled-components';
 
 import { houseDatabaseQueries } from '../../SQL';
 
-import * as Sharing from 'expo-sharing';
-import { Feather, Ionicons } from '@expo/vector-icons';
-
 import imgImageNotFound from '../../assets/imgNf.png';
 
 import { priceFormat } from '../../utils/priceFormat';
+
+import * as Sharing from 'expo-sharing';
+import { Feather, Ionicons } from '@expo/vector-icons';
 
 import { ScrollView, Share } from 'react-native';
 import { useRoute } from '@react-navigation/native';

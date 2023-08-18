@@ -3,16 +3,17 @@ import { Container, Line } from './styles';
 import { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
+import { HouseWithId } from '../../types/House';
+
 import { Card } from '../../components/Card';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { Loading } from '../../components/Loading';
 import { ListEmpty } from '../../components/ListEmpty';
+import { ModalFilters } from '../../components/ModalFilters';
 
 import { select } from '../../services/select';
 import { createTable } from '../../services/createTable';
-
-import { HouseWithId } from '../../types/House';
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -24,23 +25,27 @@ interface HomeProps {
 
 export function Home({ navigation }: HomeProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenModalFilters, setIsOpenModalFilters] = useState(false);
 
-  const [data, setData] = useState<HouseWithId[]>([]);
+  const [houses, setHouses] = useState<HouseWithId[]>([]);
 
-  function goPageAddProperty() {
+  const goPageAddProperty = () => {
     navigation.navigate('add_imovel');
-  }
+  };
 
-  function goPageInfo(house: HouseWithId) {
+  const goPageInfo = (house: HouseWithId) => {
     navigation.navigate('info', { house });
-  }
+  };
+
+  const toggleModalFilters = () => {
+    setIsOpenModalFilters(!isOpenModalFilters);
+  };
 
   const handleHouses = async () => {
     setIsLoading(true);
 
-    const house = await select();
-
-    setData(house ?? []);
+    const houses = await select();
+    setHouses(houses ?? []);
 
     setIsLoading(false);
   };
@@ -68,7 +73,7 @@ export function Home({ navigation }: HomeProps) {
     };
   }, []);
 
-  const flex = data.length === 0 ? 1 : undefined;
+  const flex = houses.length === 0 ? 1 : undefined;
 
   return (
     <Container>
@@ -81,19 +86,29 @@ export function Home({ navigation }: HomeProps) {
           <Line />
 
           <FlatList
-            data={data}
+            data={houses}
             keyExtractor={({ id }) => `${id}`}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => renderCard(item)}
             contentContainerStyle={{ flex, paddingTop: 10, paddingBottom: 50 }}
             ListEmptyComponent={() => (
-              <ListEmpty message="Cadastre o seu primeiro imóvel" />
+              <ListEmpty message="Oops, sem imóveis para exibir!" />
             )}
           />
+
+          <Button type="TERTIARY" onPress={toggleModalFilters}>
+            Aplicar filtros
+          </Button>
 
           <Button type="PRIMARY" onPress={goPageAddProperty}>
             Cadastrar um novo imóvel
           </Button>
+
+          <ModalFilters
+            setHouseFilter={setHouses}
+            isOpen={isOpenModalFilters}
+            toggle={toggleModalFilters}
+          />
         </>
       )}
     </Container>
