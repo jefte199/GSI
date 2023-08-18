@@ -4,12 +4,12 @@ import { useTheme } from 'styled-components';
 
 import { houseDatabaseQueries } from '../../SQL';
 
-import * as Sharing from 'expo-sharing';
-import { Feather, Ionicons } from '@expo/vector-icons';
-
 import imgImageNotFound from '../../assets/imgNf.png';
 
 import { priceFormat } from '../../utils/priceFormat';
+
+import * as Sharing from 'expo-sharing';
+import { Feather, Ionicons } from '@expo/vector-icons';
 
 import { ScrollView, Share } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -134,13 +134,15 @@ export function InfoScreen({ navigation }: InfoProps) {
         <ContainerImage>
           <Image source={img} />
 
-          <ButtonShareImage onPress={handleShareImage}>
-            <Ionicons
-              size={32}
-              name="share-outline"
-              color={COLORS.ORANGE_100}
-            />
-          </ButtonShareImage>
+          {!!imageUrl && (
+            <ButtonShareImage onPress={handleShareImage}>
+              <Ionicons
+                size={32}
+                name="share-outline"
+                color={COLORS.ORANGE_100}
+              />
+            </ButtonShareImage>
+          )}
         </ContainerImage>
 
         <ContainerPrice>
