@@ -1,7 +1,5 @@
 # GSI
 
-# WAITER-APP-MOBILE;
-
 ## Começando.
 
 Bem-vindo ao GSI!
