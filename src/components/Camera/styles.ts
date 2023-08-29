@@ -27,6 +27,7 @@ export const SnapButton = styled.TouchableOpacity`
   height: 50px;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
 `;
 
 export const PicturePreview = styled.Image`

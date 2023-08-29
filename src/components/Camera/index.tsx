@@ -2,6 +2,8 @@ import { Loading } from '../Loading';
 
 import { useEffect, useRef, useState } from 'react';
 
+import { resizeImage } from '../../utils/resizeImage';
+
 import { FontAwesome } from '@expo/vector-icons';
 import { CameraType, Camera as ExpoCamera } from 'expo-camera';
 
@@ -26,18 +28,18 @@ interface TakePictureAsync {
 interface Props {
   showCamera: boolean;
   onRequestClose: () => void;
-  onAccept: (uri: string) => void;
+  onCapturedImage: (images: string) => void;
 }
 
 export function Camera(props: Props) {
-  const { showCamera, onAccept, onRequestClose } = props;
+  const { showCamera, onCapturedImage, onRequestClose } = props;
 
   const cameraRef = useRef<TakePictureAsync | null>(null);
 
-  const [imageUri, setImageUri] = useState('');
-
   const [isPermission, setIsPermission] = useState(false);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
+
+  const [imageUri, setImageUri] = useState('');
 
   const onTakePictureAsync = async () => {
     if (!cameraRef.current) return;
@@ -45,15 +47,17 @@ export function Camera(props: Props) {
     setTimeout(() => setIsTakingPhoto(true), 100);
 
     const { uri } = await cameraRef.current.takePictureAsync();
-    setImageUri(uri);
+
+    const resizedImage = await resizeImage(uri);
+    setImageUri(resizedImage ?? '');
 
     setIsTakingPhoto(false);
   };
 
   const onConfirm = () => {
-    onRequestClose();
-    onAccept(imageUri);
+    onCapturedImage(imageUri);
 
+    onRequestClose();
     setImageUri('');
   };
 
