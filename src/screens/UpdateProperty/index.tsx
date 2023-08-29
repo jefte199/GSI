@@ -1,14 +1,14 @@
 import { Container } from './styles';
 
-import { HouseWithId } from '../../types/House';
+import { HouseWithId } from '../../types/house';
 
 import { Header } from '../../components/Header';
 
 import { updateHouse } from '../../services/updateHouse';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
-
 import { PropertyForm } from '../../components/PropertyForm';
+
+import { RouteProp, useRoute } from '@react-navigation/native';
 
 import { GestureResponderEvent, ScrollView } from 'react-native';
 
@@ -43,7 +43,7 @@ export function UpdateProperty({ navigation }: UpdatePropertyProps) {
       address: house.address,
       bathroom: house.bathroom,
       newHouse: house.newHouse,
-      imageUrl: house.imageUrl,
+      imageUrls: house.imageUrls,
       contactName: house.contactName,
       neighborhood: house.neighborhood,
       contactEmail: house.contactEmail,
@@ -69,10 +69,12 @@ export function UpdateProperty({ navigation }: UpdatePropertyProps) {
 
   const handleUpdateProperty = (event: GestureResponderEvent) => {
     handleSubmit((values) => {
-      const { imageUrl = '' } = values;
-      const newValues = { ...house, ...values, imageUrl };
+      const isImageUrls = values.imageUrls?.length;
+      const imageUrls = isImageUrls ? values.imageUrls : [];
 
-      onSubmit(newValues);
+      const newValues = { ...house, ...values, imageUrls };
+
+      onSubmit(newValues as HouseWithId);
     })(event);
   };
 
