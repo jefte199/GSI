@@ -3,7 +3,7 @@ import { Container, Line } from './styles';
 import { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
-import { HouseWithId } from '../../types/House';
+import { HouseWithId } from '../../types/house';
 
 import { Card } from '../../components/Card';
 import { Button } from '../../components/Button';
@@ -57,7 +57,7 @@ export function Home({ navigation }: HomeProps) {
           comment={item.comment}
           location={item.address}
           price={`${item.price}`}
-          imageSource={item.imageUrl}
+          imageSource={item.imageUrls[0]}
         />
       </TouchableOpacity>
     );
