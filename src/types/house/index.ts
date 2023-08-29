@@ -8,7 +8,7 @@ export interface HouseBase {
   comment: string;
   newHouse: string;
   bathroom: number;
-  imageUrl: string;
+  imageUrls: string[];
   contactName: string;
   neighborhood: string;
   contactEmail: string;
