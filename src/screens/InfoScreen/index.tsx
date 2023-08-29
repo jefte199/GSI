@@ -4,8 +4,6 @@ import { useTheme } from 'styled-components';
 
 import { houseDatabaseQueries } from '../../SQL';
 
-import imgImageNotFound from '../../assets/imgNf.png';
-
 import { priceFormat } from '../../utils/priceFormat';
 
 import * as Sharing from 'expo-sharing';
@@ -21,10 +19,10 @@ import { Text } from '../../components/Text';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { ModalDelete } from './components/ModalDelete';
+import { ImageCarousel } from '../../components/ImageCarousel';
 import { ContactComponent } from '../../components/ContactComponent';
 
 import {
-  Image,
   Container,
   ContainerTag,
   ContainerPrice,
@@ -45,7 +43,6 @@ export function InfoScreen({ navigation }: InfoProps) {
   const { COLORS } = useTheme();
 
   const route = useRoute<InfoRouteProp>();
-
   const house = route.params.house;
 
   const {
@@ -58,7 +55,7 @@ export function InfoScreen({ navigation }: InfoProps) {
     comment,
     newHouse,
     bathroom,
-    imageUrl,
+    imageUrls,
     contactName,
     contactEmail,
     contactPhone,
@@ -72,6 +69,7 @@ export function InfoScreen({ navigation }: InfoProps) {
     address: contactAddress,
   };
 
+  const [imageToShare, setImageToShare] = useState('');
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
 
   const goPageHome = () => {
@@ -98,7 +96,7 @@ export function InfoScreen({ navigation }: InfoProps) {
 
   const handleShareImage = async () => {
     try {
-      await Sharing.shareAsync(imageUrl);
+      await Sharing.shareAsync(imageToShare);
     } catch (error) {
       console.error(error);
     }
@@ -124,17 +122,18 @@ export function InfoScreen({ navigation }: InfoProps) {
     }
   };
 
-  const img = imageUrl ? { uri: imageUrl } : imgImageNotFound;
-
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header navigation={navigation} showBackButton={true} />
 
         <ContainerImage>
-          <Image source={img} />
+          <ImageCarousel
+            images={imageUrls}
+            onGetImageToShare={(image: string) => setImageToShare(image)}
+          />
 
-          {!!imageUrl && (
+          {!!imageUrls.length && (
             <ButtonShareImage onPress={handleShareImage}>
               <Ionicons
                 size={32}

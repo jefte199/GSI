@@ -11,12 +11,6 @@ export const Container = styled.SafeAreaView`
   padding: 24px 24px 0 24px;
 `;
 
-export const Image = styled.Image`
-  width: 100%;
-  height: 200px;
-  border-radius: 8px;
-`;
-
 export const ContainerImage = styled.View`
   flex: 1;
   align-items: center;
