@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from 'react-native';
 
-export interface card {
+export interface Card {
   price: string;
   comment: string;
   location: string;
