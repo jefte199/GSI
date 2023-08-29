@@ -1,6 +1,6 @@
 import { Container } from './styles';
 
-import { House } from '../../types/House';
+import { House } from '../../types/house';
 
 import { Header } from '../../components/Header';
 
@@ -32,7 +32,7 @@ export function AddProperty({ navigation }: AddPropertyProps) {
       comment: '',
       address: '',
       bathroom: 1,
-      imageUrl: '',
+      imageUrls: [],
       contactName: '',
       newHouse: 'Novo',
       neighborhood: '',
