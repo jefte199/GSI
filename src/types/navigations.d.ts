@@ -1,4 +1,4 @@
-import { HouseWithId } from './House';
+import { HouseWithId } from './house';
 
 export declare global {
   type AppStackParamList = {

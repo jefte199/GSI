@@ -8,7 +8,7 @@ import { Select } from '../Select';
 
 import { useTheme } from 'styled-components';
 
-import { HouseWithId } from '../../types/House';
+import { HouseWithId } from '../../types/house';
 
 import { Modal, ScrollView } from 'react-native';
 

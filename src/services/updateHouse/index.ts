@@ -1,4 +1,4 @@
-import { HouseWithId } from '../../types/House';
+import { HouseWithId } from '../../types/house';
 
 import { houseDatabaseQueries } from '../../SQL';
 
