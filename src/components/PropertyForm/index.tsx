@@ -6,16 +6,14 @@ import { Select } from '../Select';
 import { Button } from '../Button';
 import { Camera } from '../Camera';
 import { Loading } from '../Loading';
+import { ImageSection } from '../ImageSection';
 
+import { InputContainer } from './styles';
 import { useTheme } from 'styled-components';
 
 import { phoneMask } from '../../utils/masks/phone';
 
 import { GestureResponderEvent } from 'react-native';
-
-import { resizeImage } from '../../utils/resizeImage';
-
-import { InputContainer, PicturePreview } from './styles';
 
 import {
   Control,
@@ -33,39 +31,36 @@ interface Props {
 }
 
 export function PropertyForm(props: Props) {
+  const { COLORS } = useTheme();
+
   const { buttonTitle, control, getValues, onSubmit, setValue } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
 
-  const [imageUrl, setImageUrl] = useState(getValues('imageUrl') ?? '');
-
-  const { COLORS } = useTheme();
+  const images = getValues('imageUrls');
+  const [imageUrls, setImageUrls] = useState<string[]>(images ?? []);
 
   const convertToNumber = (value: string) => {
     const numericValue = parseFloat(value);
     return isNaN(numericValue) ? '' : numericValue;
   };
 
-  async function handleImage(imageUri: string) {
+  const onCapturedImage = (imageUri: string) => {
     setIsLoading(true);
 
-    const resizedImage = await resizeImage(imageUri);
-
-    if (!resizedImage) return;
-
-    setImageUrl(resizedImage);
+    setImageUrls((prevState) => [...prevState, imageUri]);
 
     setIsLoading(false);
-  }
-
-  const toggleShowCamera = () => {
-    setShowCamera(true);
   };
 
+  const onClearImageUrls = () => setImageUrls([]);
+
+  const toggleShowCamera = () => setShowCamera(true);
+
   useEffect(() => {
-    setValue('imageUrl', imageUrl);
-  }, [imageUrl]);
+    setValue('imageUrls', imageUrls);
+  }, [imageUrls]);
 
   return (
     <>
@@ -392,35 +387,15 @@ export function PropertyForm(props: Props) {
 
           <Camera
             showCamera={showCamera}
+            onCapturedImage={onCapturedImage}
             onRequestClose={() => setShowCamera(false)}
-            onAccept={(uri: string) => handleImage(uri)}
           />
 
-          {imageUrl.length ? (
-            <>
-              <Text weight="700" color={COLORS.GRAY_400} size={18}>
-                Imagem do imóvel
-              </Text>
-
-              <PicturePreview source={{ uri: imageUrl }} />
-
-              <Button
-                type="PRIMARY"
-                style={{ marginBottom: 8 }}
-                onPress={() => setImageUrl('')}
-              >
-                Remover imagem
-              </Button>
-            </>
-          ) : (
-            <Button
-              type="PRIMARY"
-              onPress={toggleShowCamera}
-              style={{ marginBottom: 8 }}
-            >
-              Tirar foto do imóvel
-            </Button>
-          )}
+          <ImageSection
+            imageUrls={imageUrls}
+            toggleShowCamera={toggleShowCamera}
+            onClearImageUrls={onClearImageUrls}
+          />
 
           <Button type="PRIMARY" onPress={onSubmit}>
             {buttonTitle}
