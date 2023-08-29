@@ -1,21 +1,21 @@
 import { Text } from '../Text';
 
-import { card } from '../../types/card';
-
 import { useTheme } from 'styled-components';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { priceFormat } from '../../utils/priceFormat';
+import imageNotFound from '../../assets/imgNf.png';
 
-import imgImageNotFound from '../../assets/imgNf.png';
+import { Card as TypeCard } from '../../types/card';
+
+import { priceFormat } from '../../utils/priceFormat';
 
 import { Image, Container, InfoContainer, ContainerText } from './styles';
 
-export function Card({ imageSource, comment, location, price }: card) {
+export function Card({ imageSource, comment, location, price }: TypeCard) {
   const { COLORS } = useTheme();
 
-  const img = imageSource ? { uri: imageSource } : imgImageNotFound;
+  const img = imageSource ? { uri: imageSource } : imageNotFound;
 
   return (
     <Container>
