@@ -10,11 +10,13 @@ export const backgroundColor = (
   theme: DefaultTheme,
   type: ButtonTypeStyleProps
 ) => {
-  if (type === 'PRIMARY') return theme.COLORS.GREEN_700;
+  const colors = {
+    PRIMARY: theme.COLORS.GREEN_700,
+    SECONDARY: theme.COLORS.RED_DARK,
+    TERTIARY: theme.COLORS.ORANGE_100,
+  };
 
-  if (type === 'SECONDARY') return theme.COLORS.RED_DARK;
-
-  return theme.COLORS.ORANGE_100;
+  return colors[type];
 };
 
 export const Container = styled(TouchableOpacity as any)<Props>`
