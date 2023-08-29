@@ -1,8 +1,10 @@
 import { db } from '../database';
 
-import { House, HouseWithId } from '../types/House';
+import { House, HouseWithId } from '../types/house';
 
 import { PropertySearchFilters } from '../types/propertySearchFilters';
+
+import { convertStringForObject } from '../utils/convertStringForObject';
 
 async function executeQuery(query: string, params: any[] = []): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -32,7 +34,7 @@ export const houseDatabaseQueries = {
         newHouse TEXT,
         price INTEGER,
         rooms INTEGER,
-        imageUrl TEXT,
+        imageUrls TEXT,
         garage INTEGER,
         bathroom INTEGER,
         contactName TEXT,
@@ -51,8 +53,9 @@ export const houseDatabaseQueries = {
     const query = `
       INSERT INTO houses (
         area, price, rooms, garage, rented, comment, 
-        address, newHouse, bathroom, imageUrl, contactName, neighborhood,
-        selectedDate, contactEmail, contactPhone, contactAddress
+        address, newHouse, bathroom, contactName, neighborhood,
+        selectedDate, contactEmail, contactPhone, contactAddress,
+        imageUrls
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
@@ -67,13 +70,13 @@ export const houseDatabaseQueries = {
       house.address,
       house.newHouse,
       house.bathroom,
-      house.imageUrl,
       house.contactName,
       house.neighborhood,
       house.selectedDate,
       house.contactEmail,
       house.contactPhone,
       house.contactAddress,
+      JSON.stringify(house.imageUrls),
     ];
 
     const result = await executeQuery(query, params);
@@ -96,13 +99,13 @@ export const houseDatabaseQueries = {
         address = ?,
         newHouse = ?,
         bathroom = ?,
-        imageUrl = ?,
         contactName = ?,
         neighborhood = ?,
         selectedDate = ?,
         contactEmail = ?,
         contactPhone = ?,
-        contactAddress = ?
+        contactAddress = ?,
+        imageUrls = ?
       WHERE id = ?;
     `;
 
@@ -116,13 +119,13 @@ export const houseDatabaseQueries = {
       house.address,
       house.newHouse,
       house.bathroom,
-      house.imageUrl,
       house.contactName,
       house.neighborhood,
       house.selectedDate,
       house.contactEmail,
       house.contactPhone,
       house.contactAddress,
+      JSON.stringify(house.imageUrls),
       house.id,
     ];
 
@@ -181,7 +184,10 @@ export const houseDatabaseQueries = {
 
     if (result.rows.length === 0) throw new Error('House not found');
 
-    return result.rows.item(0) as HouseWithId;
+    const house = result.rows.item(0);
+    const imageUrls = convertStringForObject(house.imageUrls);
+
+    return { ...house, imageUrls };
   },
 
   getHouses: async (): Promise<HouseWithId[]> => {
@@ -191,7 +197,10 @@ export const houseDatabaseQueries = {
     const houseList: HouseWithId[] = [];
 
     for (let index = 0; index < result.rows.length; index++) {
-      houseList.push(result.rows.item(index) as HouseWithId);
+      const house = result.rows.item(index);
+      const imageUrls = convertStringForObject(house.imageUrls);
+
+      houseList.push({ ...house, imageUrls });
     }
 
     return houseList;
