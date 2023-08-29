@@ -4,7 +4,7 @@ const cellphoneRegExp = /^\(\d{2}\)\d{5}-\d{4}$/;
 
 export const useValidationForm = () => {
   return yup.object({
-    imageUrl: yup.string(),
+    imageUrls: yup.array(yup.string()),
     rooms: yup.number().required('Informe o total de quartos'),
     bathroom: yup.number().required('Informe o total de banheiros'),
     garage: yup.number().required('Informe o total de vagas / garagens'),
