@@ -7,7 +7,7 @@ import { houseDatabaseQueries } from '../../SQL';
 import { priceFormat } from '../../utils/priceFormat';
 
 import * as Sharing from 'expo-sharing';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons';
 
 import { ScrollView, Share } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -34,6 +34,8 @@ import {
 type InfoRouteProp = RouteProp<AppStackParamList, 'info'>;
 
 type TypeNavigation = NativeStackNavigationProp<AppStackParamList>;
+
+type TypeHouseIcons = 'Casa' | 'Apartamento' | 'Terreno' | 'Ponto comercial';
 
 interface InfoProps {
   navigation: TypeNavigation;
@@ -134,6 +136,17 @@ export function InfoScreen({ navigation }: InfoProps) {
     return newComment;
   };
 
+  const typeHouseIcons = {
+    Casa: <Feather name="home" size={24} color={COLORS.ORANGE_100} />,
+    Terreno: <FontAwesome name="tree" size={24} color={COLORS.ORANGE_100} />,
+    Apartamento: (
+      <FontAwesome name="building" size={24} color={COLORS.ORANGE_100} />
+    ),
+    ['Ponto comercial']: (
+      <FontAwesome name="shopping-bag" size={24} color={COLORS.ORANGE_100} />
+    ),
+  };
+
   const isHome = typeHouse === 'Casa';
 
   return (
@@ -165,7 +178,7 @@ export function InfoScreen({ navigation }: InfoProps) {
         </ContainerPrice>
 
         <ContainerTag>
-          <Feather name="home" size={24} color={COLORS.ORANGE_100} />
+          {typeHouseIcons[typeHouse as TypeHouseIcons]}
 
           <Text>
             Este é {isHome ? 'uma' : 'um'} {typeHouse.toLocaleLowerCase()}. Além
