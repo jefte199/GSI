@@ -7,5 +7,6 @@ export interface PropertySearchFilters {
   address: string;
   bathroom: number;
   newHouse: string;
+  typeHouse: string;
   neighborhood: string;
 }

@@ -40,6 +40,7 @@ type FieldOptions =
   | 'address'
   | 'bathroom'
   | 'newHouse'
+  | 'typeHouse'
   | 'neighborhood';
 
 export function ModalFilters({ isOpen, toggle, setHouseFilter }: Props) {
@@ -54,6 +55,7 @@ export function ModalFilters({ isOpen, toggle, setHouseFilter }: Props) {
     address: '',
     bathroom: 0,
     newHouse: '',
+    typeHouse: '',
     neighborhood: '',
   } as PropertySearchFilters;
 
@@ -97,6 +99,20 @@ export function ModalFilters({ isOpen, toggle, setHouseFilter }: Props) {
               selectedOption={filters.newHouse || ''}
               setSelectedOption={(value) => {
                 handleChange('newHouse', String(value));
+              }}
+            />
+          </ContainerFilter>
+
+          <ContainerFilter>
+            <Text weight="700" color={COLORS.GRAY_400} size={18}>
+              Filtrar por imóvel
+            </Text>
+
+            <Select
+              selectedOption={filters.typeHouse || ''}
+              list={['Casa', 'Terreno', 'Apartamento', 'Ponto comercial']}
+              setSelectedOption={(value) => {
+                handleChange('typeHouse', String(value));
               }}
             />
           </ContainerFilter>

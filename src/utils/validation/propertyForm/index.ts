@@ -6,6 +6,7 @@ export const useValidationForm = () => {
   return yup.object({
     imageUrls: yup.array(yup.string()),
     rooms: yup.number().required('Informe o total de quartos'),
+    typeHouse: yup.string().required('Informe o tipo do imóvel'),
     bathroom: yup.number().required('Informe o total de banheiros'),
     garage: yup.number().required('Informe o total de vagas / garagens'),
     address: yup.string().trim().required('Informe o enderenço do imóvel'),

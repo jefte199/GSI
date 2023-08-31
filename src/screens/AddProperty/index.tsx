@@ -38,6 +38,7 @@ export function AddProperty({ navigation }: AddPropertyProps) {
       neighborhood: '',
       contactEmail: '',
       contactPhone: '',
+      typeHouse: 'Casa',
       rented: 'Alugado',
       contactAddress: '',
     },

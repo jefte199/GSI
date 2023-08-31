@@ -36,6 +36,7 @@ export const houseDatabaseQueries = {
         rooms INTEGER,
         imageUrls TEXT,
         garage INTEGER,
+        typeHouse TEXT,
         bathroom INTEGER,
         contactName TEXT,
         contactEmail TEXT,
@@ -53,11 +54,11 @@ export const houseDatabaseQueries = {
     const query = `
       INSERT INTO houses (
         area, price, rooms, garage, rented, comment, 
-        address, newHouse, bathroom, contactName, neighborhood,
-        selectedDate, contactEmail, contactPhone, contactAddress,
-        imageUrls
+        address, newHouse, bathroom, typeHouse, contactName, 
+        neighborhood, selectedDate, contactEmail, contactPhone,
+        contactAddress, imageUrls
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
     const params = [
@@ -70,6 +71,7 @@ export const houseDatabaseQueries = {
       house.address,
       house.newHouse,
       house.bathroom,
+      house.typeHouse,
       house.contactName,
       house.neighborhood,
       house.selectedDate,
@@ -99,6 +101,7 @@ export const houseDatabaseQueries = {
         address = ?,
         newHouse = ?,
         bathroom = ?,
+        typeHouse = ?,
         contactName = ?,
         neighborhood = ?,
         selectedDate = ?,
@@ -119,6 +122,7 @@ export const houseDatabaseQueries = {
       house.address,
       house.newHouse,
       house.bathroom,
+      house.typeHouse,
       house.contactName,
       house.neighborhood,
       house.selectedDate,
@@ -148,6 +152,7 @@ export const houseDatabaseQueries = {
       address = ? OR
       newHouse = ? OR
       bathroom = ? OR
+      typeHouse = ? OR
       neighborhood = ?
   `;
 
@@ -162,6 +167,7 @@ export const houseDatabaseQueries = {
       options.address,
       options.newHouse,
       options.bathroom,
+      options.typeHouse,
       options.neighborhood,
     ];
 
@@ -170,7 +176,10 @@ export const houseDatabaseQueries = {
     const houseList: HouseWithId[] = [];
 
     for (let index = 0; index < result.rows.length; index++) {
-      houseList.push(result.rows.item(index) as HouseWithId);
+      const house = result.rows.item(index);
+      const imageUrls = convertStringForObject(house.imageUrls);
+
+      houseList.push({ ...house, imageUrls });
     }
 
     return houseList;

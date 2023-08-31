@@ -93,6 +93,29 @@ export function PropertyForm(props: Props) {
 
           <InputContainer>
             <Text weight="700" color={COLORS.GRAY_400} size={18}>
+              Tipo do imóvel
+            </Text>
+
+            <Controller
+              name="typeHouse"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <Select
+                  {...field}
+                  ref={null}
+                  error={error?.message}
+                  selectedOption={getValues('typeHouse')}
+                  list={['Casa', 'Terreno', 'Apartamento', 'Ponto comercial']}
+                  setSelectedOption={(value) => {
+                    setValue('typeHouse', String(value));
+                  }}
+                />
+              )}
+            />
+          </InputContainer>
+
+          <InputContainer>
+            <Text weight="700" color={COLORS.GRAY_400} size={18}>
               Imóvel se encontra
             </Text>
 
@@ -328,9 +351,10 @@ export function PropertyForm(props: Props) {
                   <Input
                     {...field}
                     ref={null}
-                    type={error?.type}
+                    autoCapitalize="none"
                     error={error?.message}
                     placeholder="carlos@gmail"
+                    keyboardType="email-address"
                     value={getValues('contactEmail')}
                     onChangeText={(value) => setValue('contactEmail', value)}
                   />

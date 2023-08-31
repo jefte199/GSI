@@ -44,6 +44,7 @@ export function UpdateProperty({ navigation }: UpdatePropertyProps) {
       bathroom: house.bathroom,
       newHouse: house.newHouse,
       imageUrls: house.imageUrls,
+      typeHouse: house.typeHouse,
       contactName: house.contactName,
       neighborhood: house.neighborhood,
       contactEmail: house.contactEmail,

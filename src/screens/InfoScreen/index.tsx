@@ -55,6 +55,7 @@ export function InfoScreen({ navigation }: InfoProps) {
     comment,
     newHouse,
     bathroom,
+    typeHouse,
     imageUrls,
     contactName,
     contactEmail,
@@ -111,6 +112,7 @@ export function InfoScreen({ navigation }: InfoProps) {
         - Condição: ${newHouse},
         - Total de quartos: ${rooms},
         - Vagas / Garagens: ${garage},
+        - Tipo do imóvel: ${typeHouse},
         - Preço: ${priceFormat(price)},
         - Total de banheiros: ${bathroom},
         - Comentários / Detalhes: ${comment}.
@@ -121,6 +123,18 @@ export function InfoScreen({ navigation }: InfoProps) {
       console.error(error);
     }
   };
+
+  const handlePointEnd = (value: string) => {
+    if (value.trim().endsWith('.')) return value.trim();
+    return `${value.trim()}.`;
+  };
+
+  const handleComment = () => {
+    const newComment = handlePointEnd(comment);
+    return newComment;
+  };
+
+  const isHome = typeHouse === 'Casa';
 
   return (
     <Container>
@@ -147,28 +161,29 @@ export function InfoScreen({ navigation }: InfoProps) {
         <ContainerPrice>
           <Ionicons color="green" name="cash-outline" size={24} />
 
-          <Text weight="700">{priceFormat(price) || '-'}</Text>
+          <Text weight="700">{priceFormat(price)}</Text>
         </ContainerPrice>
 
         <ContainerTag>
           <Feather name="home" size={24} color={COLORS.ORANGE_100} />
 
           <Text>
-            O imóvel é {newHouse.toLowerCase()} e está {rented.toLowerCase()}
+            Este é {isHome ? 'uma' : 'um'} {typeHouse.toLocaleLowerCase()}. Além
+            disso, é {newHouse.toLowerCase()} e está {rented.toLowerCase()}.
           </Text>
         </ContainerTag>
 
         <ContainerDescription>
           <Ionicons size={24} name="chatbox-outline" color={COLORS.GRAY_300} />
 
-          <Text>{comment || '-'}</Text>
+          <Text>{handleComment()}</Text>
         </ContainerDescription>
 
         <Tag
-          area={area?.toString() || '-'}
-          numberBed={rooms?.toString() || '-'}
-          numberGarage={garage.toString() || '-'}
-          numberShower={bathroom?.toString() || '-'}
+          area={area.toString()}
+          numberBed={rooms.toString()}
+          numberGarage={garage.toString()}
+          numberShower={bathroom.toString()}
         />
 
         <ContactComponent props={props} />
