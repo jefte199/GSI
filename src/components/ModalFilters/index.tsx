@@ -183,7 +183,7 @@ export function ModalFilters({ isOpen, toggle, setHouseFilter }: Props) {
 
             <Slider
               minimumValue={0}
-              maximumValue={10000}
+              maximumValue={200000}
               thumbTintColor={COLORS.GRAY_300}
               maximumTrackTintColor={COLORS.GRAY_300}
               minimumTrackTintColor={COLORS.GRAY_400}
