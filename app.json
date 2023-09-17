@@ -39,6 +39,12 @@
         {
           "cameraPermissionText": "O GSI precisa acessar sua câmera."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O GSI acessa suas fotos para permitir que você compartilhe fotos do seu imóvel."
+        }
       ]
     ],
     "extra": {
