@@ -5,12 +5,12 @@ import { ImageCarousel } from '../ImageCarousel';
 
 interface Props {
   imageUrls: string[];
-  toggleShowCamera: () => void;
   onClearImageUrls: () => void;
+  onAddImageGallery: () => void;
 }
 
-export function ImageSection(props: Props) {
-  const { imageUrls, onClearImageUrls, toggleShowCamera } = props;
+export function GallerySection(props: Props) {
+  const { imageUrls, onClearImageUrls, onAddImageGallery } = props;
 
   return (
     <>
@@ -22,10 +22,10 @@ export function ImageSection(props: Props) {
 
           <Button
             type="TERTIARY"
-            onPress={toggleShowCamera}
+            onPress={onAddImageGallery}
             style={{ marginBottom: 8 }}
           >
-            Tirar outra foto do imóvel
+            Selecionar outra imagem
           </Button>
 
           <Button
@@ -39,10 +39,10 @@ export function ImageSection(props: Props) {
       ) : (
         <Button
           type="TERTIARY"
-          onPress={toggleShowCamera}
+          onPress={onAddImageGallery}
           style={{ marginBottom: 8 }}
         >
-          Tirar foto(s) do imóvel
+          Selecionar imagem da galeria
         </Button>
       )}
     </>

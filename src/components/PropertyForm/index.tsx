@@ -7,11 +7,15 @@ import { Button } from '../Button';
 import { Camera } from '../Camera';
 import { Loading } from '../Loading';
 import { ImageSection } from '../ImageSection';
+import { GallerySection } from '../GallerySection';
 
 import { InputContainer } from './styles';
 import { useTheme } from 'styled-components';
 
+import * as ImagePicker from 'expo-image-picker';
+
 import { phoneMask } from '../../utils/masks/phone';
+import { resizeImage } from '../../utils/resizeImage';
 
 import { GestureResponderEvent } from 'react-native';
 
@@ -25,6 +29,7 @@ import {
 interface Props {
   buttonTitle: string;
   control: Control<any>;
+  isCreateNewHouse?: boolean;
   setValue: UseFormSetValue<any>;
   getValues: UseFormGetValues<any>;
   onSubmit: (event: GestureResponderEvent) => void;
@@ -33,7 +38,8 @@ interface Props {
 export function PropertyForm(props: Props) {
   const { COLORS } = useTheme();
 
-  const { buttonTitle, control, getValues, onSubmit, setValue } = props;
+  const { getValues, onSubmit, setValue } = props;
+  const { isCreateNewHouse, buttonTitle, control } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
@@ -44,6 +50,24 @@ export function PropertyForm(props: Props) {
   const convertToNumber = (value: string) => {
     const numericValue = parseFloat(value);
     return isNaN(numericValue) ? '' : numericValue;
+  };
+
+  const onAddImageGallery = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      quality: 1,
+      aspect: [4, 3],
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    });
+
+    if (result.canceled) return;
+
+    const { assets } = result;
+
+    const uri = assets[0].uri;
+    const resizedImagem = (await resizeImage(uri)) ?? '';
+
+    setImageUrls((prevState) => [...prevState, resizedImagem]);
   };
 
   const onCapturedImage = (imageUri: string) => {
@@ -409,17 +433,33 @@ export function PropertyForm(props: Props) {
             />
           </InputContainer>
 
-          <Camera
-            showCamera={showCamera}
-            onCapturedImage={onCapturedImage}
-            onRequestClose={() => setShowCamera(false)}
-          />
+          {imageUrls.length > 1 && (
+            <Text weight="700" color={COLORS.GRAY_400} size={18}>
+              {imageUrls.length > 1 ? 'imagens' : 'imagem'} do imóvel
+            </Text>
+          )}
 
-          <ImageSection
-            imageUrls={imageUrls}
-            toggleShowCamera={toggleShowCamera}
-            onClearImageUrls={onClearImageUrls}
-          />
+          {!isCreateNewHouse ? (
+            <>
+              <Camera
+                showCamera={showCamera}
+                onCapturedImage={onCapturedImage}
+                onRequestClose={() => setShowCamera(false)}
+              />
+
+              <ImageSection
+                imageUrls={imageUrls}
+                toggleShowCamera={toggleShowCamera}
+                onClearImageUrls={onClearImageUrls}
+              />
+            </>
+          ) : (
+            <GallerySection
+              imageUrls={imageUrls}
+              onClearImageUrls={onClearImageUrls}
+              onAddImageGallery={onAddImageGallery}
+            />
+          )}
 
           <Button type="PRIMARY" onPress={onSubmit}>
             {buttonTitle}

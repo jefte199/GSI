@@ -71,6 +71,7 @@ export function AddProperty({ navigation }: AddPropertyProps) {
         <Header navigation={navigation} showBackButton={true} />
 
         <PropertyForm
+          isCreateNewHouse
           control={control}
           setValue={setValue}
           getValues={getValues}
