@@ -24,7 +24,10 @@
         "backgroundColor": "#ffffff",
         "foregroundImage": "./assets/adaptive-icon.png"
       },
-      "permissions": ["android.permission.CAMERA"],
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.GSI"
     },
     "web": {
@@ -37,6 +40,11 @@
           "cameraPermissionText": "O GSI precisa acessar sua câmera."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "fe2c1e38-02ab-4832-8e2a-5fba6864bb5b"
+      }
+    }
   }
 }
