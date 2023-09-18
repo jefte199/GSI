@@ -433,7 +433,7 @@ export function PropertyForm(props: Props) {
             />
           </InputContainer>
 
-          {imageUrls.length > 1 && (
+          {imageUrls.length > 0 && (
             <Text weight="700" color={COLORS.GRAY_400} size={18}>
               {imageUrls.length > 1 ? 'imagens' : 'imagem'} do imóvel
             </Text>
